@@ -1,0 +1,38 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.openOcdConfigs": [
+    "board/esp32s3-builtin.cfg"
+  ],
+  "idf.portWin": "COM10",
+  "idf.currentSetup": "d:\\esp-idf\\v5.5.1\\esp-idf",
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32s3"
+  },
+  "clangd.path": "d:\\esp-idf\\tools\\.espressif\\tools\\esp-clang\\esp-19.1.2_20250312\\esp-clang\\bin\\clangd.exe",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=**",
+    "--compile-commands-dir=d:\\RWU\\Embedded-Project\\task_3\\esp32s3\\controller\\build"
+  ],
+  "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+  "C_Cpp.autoAddFileAssociations": true,
+  "C_Cpp.autocompleteAddParentheses": true,
+  "C_Cpp.doxygen.generatedStyle": "/**",
+  "files.associations": {
+    "heartbeat_led.h": "c",
+    "freertos.h": "c",
+    "queue.h": "c",
+    "task.h": "c",
+    "gpio.h": "c",
+    "led_blink_handler.h": "c",
+    "stdint.h": "c",
+    "esp_log.h": "c",
+    "main.h": "c",
+    "adc_oneshot.h": "c",
+    "param.h": "c",
+    "mqtt_client.h": "c",
+    "stdio.h": "c",
+    "mqtt_manager.h": "c"
+  },
+  "idf.flashType": "UART"
+}

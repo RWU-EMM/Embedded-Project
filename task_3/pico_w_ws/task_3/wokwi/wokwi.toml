@@ -1,0 +1,8 @@
+[wokwi]
+version = 1
+
+firmware = "../build/task_3.elf"
+elf = "../build/task_3.elf"
+uf2 = "../build/task_3.uf2"
+
+rfc2217ServerPort = 4000
