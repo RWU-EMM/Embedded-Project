@@ -1,0 +1,7 @@
+[wokwi]
+version = 1
+firmware = 'controller.elf'
+elf = 'controller.elf'
+
+serialMonitor = true
+rfc2217ServerPort = 4000

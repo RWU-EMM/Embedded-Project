@@ -1,0 +1,37 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "default",
+      "displayName": "Pico W MQTT Build",
+      "generator": "MinGW Makefiles",
+      "binaryDir": "build",
+      "cacheVariables": {
+        "PICO_SDK_PATH": "D:/RWU/Embedded-Project/rpi_pico_sdk/pico-sdk",
+        "CMAKE_PREFIX_PATH": "D:/RWU/Embedded-Project/rpi_pico_sdk/picotool",
+        "PICO_BOARD": "pico_w",
+        "PICO_DRIVE": "RPI-RP2",
+
+        "RGB_LED_USE_RGBW": "0",
+
+        "WIFI_SSID_2": "NoDevice",
+        "WIFI_PASSWORD_2": "13071307",
+        "WIFI_SSID": "Wokwi-GUEST",
+        "WIFI_PASSWORD": "",
+        "MQTT_SERVER": "broker.emqx.io",
+
+        "TOPIC_CONNECT": "/connect",
+        "TOPIC_CMD": "/cmd",
+        "TOPIC_ACK": "/ack",
+        "TOPIC_DATA": "/data"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default"
+    }
+  ]
+}
