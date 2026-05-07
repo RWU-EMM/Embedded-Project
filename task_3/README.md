@@ -22,7 +22,19 @@ Task-3 implements MQTT-based communication exchange between the **ESP32-S3** and
 PC  <──UART──>  ESP32-S3  <──MQTT──>  Raspberry Pi Pico W
 ```
 
----
+## Features
+
+- UART-to-MQTT command bridge
+- JSON-based structured communication
+- Multi-device scalable architecture
+- MQTT wildcard topic routing
+- Device authentication handshake
+- ACK synchronization with sequence tracking
+- Dynamic device registry
+- Remote telemetry reporting
+- WiFi & MQTT reconnect handling
+- RGB LED and potentiometer control
+- Modular FreeRTOS-based software architecture
 
 
 ## Project Test Setup
@@ -72,7 +84,7 @@ Before starting, install the following VS Code extensions:
 
 ### Step 3 — Monitor MQTT Topics with Postman *(Recommended)*
 
-**MQTT Broker:** `broker.emqx.io`
+**MQTT Broker:** `141.69.95.10`
 
 1. Download and install **[Postman](https://www.postman.com/downloads/)**.
 2. Click **New** (top left) → select **MQTT**.

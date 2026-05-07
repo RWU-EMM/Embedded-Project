@@ -27,7 +27,7 @@ static bool IRAM_ATTR led_timer_cb(gptimer_handle_t timer,
 
     if ((1 == led->state) && (0 == led->ctrl_en))
     {
-        led->state = !led->state;
+        led->state = 1; // ELD's Are Active Low
         gpio_set_level(led->gpio_num, led->state);
     }
 
@@ -79,14 +79,11 @@ esp_err_t init_led_blink(led_blink_t *led, gpio_pull_mode_t mode)
 
 esp_err_t led_blink_set_frequency(led_blink_t *led, float freq_hz)
 {
-    if (freq_hz < 0)
-    {
-        return led_blink_set_frequency(led, 6.0);
-    }
-    else if (freq_hz < 1)
-    {
-        return led_blink_stop(led);
-    }
+    if (freq_hz > 20.0f)
+        freq_hz = 20.0f;
+
+    if (freq_hz < 0.5f)
+        freq_hz = 0.5f;
 
     uint32_t period_us = (uint32_t)(1000000.0f / (freq_hz * 2));
 
@@ -101,13 +98,18 @@ esp_err_t led_blink_set_frequency(led_blink_t *led, float freq_hz)
 
 esp_err_t led_blink_start(led_blink_t *led)
 {
+    if (led->blink_flag)
+    {
+        return ESP_OK;
+    }
+    led->blink_flag = 1;
     timer_run_state = 1;
     return gptimer_start(led->timer);
 }
 
 esp_err_t led_blink_stop(led_blink_t *led)
 {
-
+    led->blink_flag = 0;
     timer_run_state = 0;
     return gptimer_stop(led->timer);
 }
@@ -115,4 +117,33 @@ esp_err_t led_blink_stop(led_blink_t *led)
 uint8_t get_timer_run_state()
 {
     return timer_run_state;
+}
+
+esp_err_t led_blink_set_period_ms(led_blink_t *led,
+                                  uint32_t period_ms)
+{
+    if (period_ms == led->last_intvl_ms)
+    {
+        return ESP_OK;
+    }
+
+    if (period_ms < 50)
+        period_ms = 50;
+
+    if (period_ms > 2000)
+        period_ms = 2000;
+
+    led->last_intvl_ms = period_ms;
+
+    uint32_t period_us = (period_ms * 1000UL) / 2;
+
+    gptimer_alarm_config_t alarm_config = {
+        .reload_count = 0,
+        .alarm_count = period_us,
+        .flags.auto_reload_on_alarm = 1,
+    };
+
+    return gptimer_set_alarm_action(
+        led->timer,
+        &alarm_config);
 }

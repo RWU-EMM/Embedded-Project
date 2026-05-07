@@ -217,8 +217,9 @@ void rgb_led_blink_pixel(rgb_led_t *dev, int idx,
 
     rgb_pixel_t *p = &dev->pixels[idx];
 
-    p->r = r;
-    p->g = g;
+    // @todo: resolve led swap
+    p->r = g;
+    p->g = r;
     p->b = b;
 #if RGB_LED_USE_RGBW
     p->w = w;

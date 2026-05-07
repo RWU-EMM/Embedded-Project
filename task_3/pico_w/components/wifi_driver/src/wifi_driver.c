@@ -49,10 +49,15 @@ uint8_t wifi_connect(char *ssid, char *pass)
     // ---------------------------
     // Handle password + auth
     // ---------------------------
-    if (pass == NULL || strlen(pass) == 0)
+    if (pass == NULL)
     {
-        use_pass = "";
-        auth = CYW43_AUTH_OPEN;
+        if(strlen(WIFI_PASSWORD) == 0){
+            use_pass = "";
+            auth = CYW43_AUTH_OPEN;
+        }
+        else{
+            use_pass = WIFI_PASSWORD;
+        }   
     }
     else
     {

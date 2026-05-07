@@ -7,7 +7,7 @@
 typedef struct
 {
     char token[32];
-    int seq;
+    uint32_t seq;
 
     struct
     {

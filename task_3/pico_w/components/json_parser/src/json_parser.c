@@ -34,11 +34,17 @@ bool json_parse_command(const char *json_str, json_cmd_t *cmd)
         cJSON *en = cJSON_GetObjectItemCaseSensitive(led, "en");
         cJSON *blink = cJSON_GetObjectItemCaseSensitive(led, "blink_intvl");
 
-        if (cJSON_IsNumber(en))
+        if (cJSON_IsNumber(en)){
             cmd->led.en = en->valueint;
+        }
 
         if (cJSON_IsNumber(blink))
+        {
+            // bink range to 50 to 2000
+            blink->valueint = (blink->valueint <= 50) ? 50 : blink->valueint;
+            blink->valueint = (blink->valueint >= 2000) ? 2000 : blink->valueint;
             cmd->led.blink_intvl = blink->valueint;
+        }
     }
 
     // POT (flat)

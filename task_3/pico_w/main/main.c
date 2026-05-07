@@ -16,15 +16,18 @@
 
 #include "rgb_led.h"
 
-#define SWAP_STATSU_LED_WITH_RGB 0
+#define SWAP_LED_WITH_RGB 1
+
 #define MQTT_RETRY_INTERVAL_MS 10000
+
+#define CMD_TIMEOUT_MS 10000
 
 void handle_auth(const char *data);
 void handle_cmd(const char *data);
 static void build_topic(char *out, size_t len, const char *base, const char *token);
 static void heartbeat_worker_fn(async_context_t *context, async_at_time_worker_t *worker);
 static void handle_status_led(
-#if (1 == SWAP_STATSU_LED_WITH_RGB)
+#if (1 == SWAP_STATUS_LED_WITH_RGB)
     int led_idx, uint8_t r, uint8_t g, uint8_t b,
 #if RGB_LED_USE_RGBW
     uint8_t w,
@@ -62,6 +65,8 @@ rgb_led_t rgb = {
 uint8_t en_local_pot_mode = 1; // 0 or 1
 
 static absolute_time_t last_mqtt_retry = {0};
+
+static absolute_time_t last_cmd_time = {0};
 
 // JSON command structure
 json_cmd_t cmd;
@@ -108,20 +113,22 @@ static void heartbeat_worker_fn(async_context_t *context, async_at_time_worker_t
         1000);
 }
 
-static void handle_status_led(
-#if (1 == SWAP_STATSU_LED_WITH_RGB)
+static void handle_led_swap(
+#if (1 == SWAP_LED_WITH_RGB)
     int led_idx, uint8_t r, uint8_t g, uint8_t b,
 #if RGB_LED_USE_RGBW
     uint8_t w,
 #endif
+#else
+    led_t *led,
 #endif
     int blink_interval)
 {
 
-#if (1 == SWAP_STATSU_LED_WITH_RGB)
+#if (1 == SWAP_LED_WITH_RGB)
     rgb_led_blink_pixel(&rgb, led_idx, r, g, b, blink_interval);
 #else
-    led_set_interval(&status_led, blink_interval);
+    led_set_interval(led, blink_interval);
 #endif
 }
 
@@ -155,7 +162,7 @@ int main()
             .username = NULL,
             .password = NULL,
 #endif
-            .server = MQTT_SERVER,
+            .server = MQTT_SERVER_IP,
             .port = 1883,
             .keep_alive = 60,
             .data_cb = my_mqtt_cb};
@@ -169,16 +176,15 @@ int main()
 
     init_led(&heart_beat_led);
     led_start_blink(&heart_beat_led, 1000);
-
-#if (1 == SWAP_STATSU_LED_WITH_RGB)
     init_rgb_led(&rgb);
+
+#if (1 == SWAP_LED_WITH_RGB)
     rgb_led_blink_pixel(&rgb, 0, 255, 250, 250, 250);
 #else
     init_led(&status_led);
     led_start_blink(&status_led, 250); // Initially blink fast (connecting)
-#endif
-
     init_led(&user_led);
+#endif
 
     auth_init();
     init_pot(26); // Initialize potentiometer on GPIO26
@@ -198,6 +204,9 @@ int main()
     srand(to_ms_since_boot(get_absolute_time()));
     bool mqtt_subscribed = false;
     static uint32_t last_user_led_interval = 0;
+
+    last_cmd_time = get_absolute_time();
+
     // Main Loop
     while (1)
     {
@@ -243,20 +252,19 @@ int main()
         // Only update LED if interval changed
         if (interval != last_interval)
         {
+
             last_interval = interval;
 
-#if (1 == SWAP_STATSU_LED_WITH_RGB)
-            handle_status_led(
-#if (1 == SWAP_STATSU_LED_WITH_RGB)
-                0, 255, 0, 0,
+            handle_led_swap(
+#if (1 == SWAP_LED_WITH_RGB)
+                0, 0, 200, 0,
 #if RGB_LED_USE_RGBW
                 uint8_t w,
 #endif
+#else
+                &status_led,
 #endif
                 interval);
-#else
-            led_set_interval(&status_led, interval);
-#endif
 
             printf("LED interval set to %d ms\n", interval);
         }
@@ -271,10 +279,22 @@ int main()
             printf("Subscribed to topics\n");
         }
 
+        // Command timeout fallback, If no command received for 10 sec,restore local POT control
+        if (absolute_time_diff_us(last_cmd_time,
+                                  get_absolute_time()) > (CMD_TIMEOUT_MS * 1000))
+        {
+            if (en_local_pot_mode == 0)
+            {
+                en_local_pot_mode = 1;
+
+                printf("CMD timeout -> Local POT mode restored\n");
+            }
+        }
+
         if (en_local_pot_mode == 1)
         {
-            uint32_t pot_val = pot_read_mapped(100, 1000);
-
+            uint32_t temp_pot_val = pot_read_mapped(100, 2000);
+            uint32_t pot_val = ((temp_pot_val + 5) / 10) * 10;
             if (pot_val != last_pot)
             {
                 last_pot = pot_val;
@@ -287,8 +307,19 @@ int main()
         {
             last_user_led_interval = user_led.blink_interval_ms;
             printf("len en_ctrl = %d\n", user_led.en_ctrl);
-            led_start_blink(&user_led, user_led.blink_interval_ms);
-            printf("LED Blink Interval updated: %d ms\n", user_led.blink_interval_ms);
+
+            handle_led_swap(
+#if (1 == SWAP_LED_WITH_RGB)
+                1, 200, 0, 0,
+#if RGB_LED_USE_RGBW
+                uint8_t w,
+#endif
+#else
+                &user_led,
+#endif
+                user_led.blink_interval_ms);
+
+            printf("User LED Blink Interval updated: %d ms\n", user_led.blink_interval_ms);
         }
 
         tight_loop_contents();
@@ -391,15 +422,11 @@ void handle_cmd(const char *data)
         return;
     }
 
+    last_cmd_time = get_absolute_time();
+
     printf("Bypassing authentication (for testing)\n");
 
     printf("Valid CMD seq=%d\n", cmd.seq);
-    // ACK
-    char ack[64];
-    if (json_create_ack(ack, sizeof(ack), cmd.seq))
-    {
-        mqtt_client_pub(topic_ack, ack);
-    }
 
     // EXECUTION
     // LED
@@ -443,11 +470,13 @@ void handle_cmd(const char *data)
                  "{"
                  "\"uptime_ms\":%lu,"
                  "\"wifi\":%d,"
-                 "\"mqtt\":%d"
+                 "\"mqtt\":%d,"
+                 "\"seq\":%lu"
                  "}",
                  uptime,
                  wifi_is_connected(),
-                 mqtt_is_connected());
+                 mqtt_is_connected(),
+                 cmd.seq);
 
         mqtt_client_pub(topic_data, resp);
     }
@@ -473,4 +502,11 @@ void handle_cmd(const char *data)
     //                     "{\"error\":\"unknown_cmd\"}");
     // }
     cmd.spl_cmd[0] = '\0';
+
+    // ACK
+    char ack[64];
+    if (json_create_ack(ack, sizeof(ack), cmd.seq))
+    {
+        mqtt_client_pub(topic_ack, ack);
+    }
 }

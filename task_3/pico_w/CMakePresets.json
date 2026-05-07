@@ -16,9 +16,18 @@
 
         "WIFI_SSID_2": "NoDevice",
         "WIFI_PASSWORD_2": "13071307",
-        "WIFI_SSID": "Wokwi-GUEST",
-        "WIFI_PASSWORD": "",
+
+        "WIFI_SSID": "H.O.M.E",
+        "WIFI_PASSWORD": "HOME2077",
+
+        "WIFI_SSID_0": "WLAN-Pi-1",
+        "WIFI_PASSWORD_0": "raspberry",
+
+        "WIFI_SSID_1": "Wokwi-GUEST",
+        "WIFI_PASSWORD_1": "",
+
         "MQTT_SERVER": "broker.emqx.io",
+        "MQTT_SERVER_IP": "141.69.95.10",
 
         "TOPIC_CONNECT": "/connect",
         "TOPIC_CMD": "/cmd",

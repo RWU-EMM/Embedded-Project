@@ -51,6 +51,7 @@ target_compile_definitions(project_config INTERFACE
     WIFI_PASSWORD="${WIFI_PASSWORD}"
     
     MQTT_SERVER="${MQTT_SERVER}"
+    MQTT_SERVER_IP="${MQTT_SERVER_IP}"
 
     RGB_LED_USE_RGBW=${RGB_LED_USE_RGBW}
 

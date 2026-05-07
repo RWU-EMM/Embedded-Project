@@ -57,7 +57,8 @@ void device_update_tx(device_entry_t *dev)
     dev->last_tx_time = esp_timer_get_time();
 }
 
-void device_update_ack(device_entry_t *dev, uint32_t seq)
+void device_update_ack_and_time(device_entry_t *dev, uint32_t seq)
 {
     dev->seq_ack = seq;
+    dev->last_ack_time_us = esp_timer_get_time();
 }
