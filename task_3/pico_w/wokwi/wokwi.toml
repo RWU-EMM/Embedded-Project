@@ -1,0 +1,9 @@
+[wokwi]
+version = 1
+
+firmware = "task_3.elf"
+elf = "task_3.elf"
+uf2 = "task_3.uf2"
+
+serialMonitor = true
+rfc2217ServerPort = 4010
