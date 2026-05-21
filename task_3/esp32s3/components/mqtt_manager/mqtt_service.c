@@ -63,6 +63,8 @@ typedef struct
     mqtt_state_t state;
     uint8_t initialized;
     uint8_t started;
+    int pending_subscriptions;
+    int subscribed_count;
     SemaphoreHandle_t lock;
     mqtt_sub_entry_t subs[MQTT_MAX_SUBSCRIPTIONS];
     mqtt_handler_entry_t handlers[MQTT_MAX_HANDLERS];
@@ -228,6 +230,10 @@ static void restore_subscriptions_locked(void)
             int id = esp_mqtt_client_subscribe(s_mqtt.client,
                                                s_mqtt.subs[i].topic,
                                                s_mqtt.subs[i].qos);
+            if (id >= 0)
+            {
+                s_mqtt.pending_subscriptions++;
+            }
             ESP_LOGI(__func__, "restore subscribe topic=%s qos=%d msg_id=%d",
                      s_mqtt.subs[i].topic, s_mqtt.subs[i].qos, id);
         }
@@ -310,7 +316,7 @@ static esp_err_t build_uri_locked(void)
 
     uint8_t has_path = (s_mqtt.cfg.path && strlen(s_mqtt.cfg.path) > 0);
     uint8_t is_ws = (s_mqtt.cfg.transport == MQTT_TRANSPORT_WS ||
-                  s_mqtt.cfg.transport == MQTT_TRANSPORT_WSS);
+                     s_mqtt.cfg.transport == MQTT_TRANSPORT_WSS);
 
     int n = has_path && is_ws
                 ? snprintf(s_mqtt.uri, sizeof(s_mqtt.uri), "%s://%s:%u%s",
@@ -368,6 +374,8 @@ static void mqtt_event_handler(void *arg,
     case MQTT_EVENT_CONNECTED:
         xSemaphoreTake(s_mqtt.lock, portMAX_DELAY);
         s_mqtt.state = MQTT_STATE_CONNECTED;
+        s_mqtt.subscribed_count = 0;
+        s_mqtt.pending_subscriptions = 0;
         ESP_LOGI(__func__, "MQTT connected (uri=%s)", s_mqtt.uri);
         restore_subscriptions_locked();
         xSemaphoreGive(s_mqtt.lock);
@@ -402,7 +410,14 @@ static void mqtt_event_handler(void *arg,
         break;
 
     case MQTT_EVENT_SUBSCRIBED:
-        ESP_LOGI(__func__, "subscribed msg_id=%d", event->msg_id);
+        xSemaphoreTake(s_mqtt.lock, portMAX_DELAY);
+        s_mqtt.subscribed_count++;
+        ESP_LOGI(__func__, "subscribed %d/%d msg_id=%d", s_mqtt.subscribed_count, s_mqtt.pending_subscriptions, event->msg_id);
+        if (s_mqtt.subscribed_count >= s_mqtt.pending_subscriptions)
+        {
+            ESP_LOGI(__func__, "ALL MQTT SUBSCRIPTIONS READY");
+        }
+        xSemaphoreGive(s_mqtt.lock);
         break;
 
     case MQTT_EVENT_UNSUBSCRIBED:
@@ -671,7 +686,11 @@ esp_err_t mqtt_service_subscribe(const char *topic, int qos)
             ESP_LOGE(__func__, "subscribe failed topic=%s", topic);
             return ESP_FAIL;
         }
-        ESP_LOGI(__func__, "subscribed topic=%s qos=%d msg_id=%d", topic, qos, id);
+        else if (id >= 0)
+        {
+            s_mqtt.pending_subscriptions++;
+        }
+        // ESP_LOGI(__func__, "subscribed topic=%s qos=%d msg_id=%d", topic, qos, id);
     }
     else
     {
@@ -806,4 +825,17 @@ mqtt_state_t mqtt_service_get_state(void)
     mqtt_state_t st = s_mqtt.state;
     xSemaphoreGive(s_mqtt.lock);
     return st;
+}
+
+uint8_t mqtt_service_all_subscribed(void)
+{
+    uint8_t ready = 0;
+
+    xSemaphoreTake(s_mqtt.lock, portMAX_DELAY);
+
+    ready = (s_mqtt.pending_subscriptions > 0) && (s_mqtt.subscribed_count >= s_mqtt.pending_subscriptions);
+
+    xSemaphoreGive(s_mqtt.lock);
+
+    return ready;
 }

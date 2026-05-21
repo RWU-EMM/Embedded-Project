@@ -8,6 +8,8 @@
 
 #include "esp_timer.h"
 
+#define MQTT_SUB_TIMEOUT_MS 10000
+
 #define ACK_TIMEOUT (10ULL * 1000000ULL)
 
 void pot_cb(uint32_t value);
@@ -92,7 +94,7 @@ static void device_monitor_task(void *arg)
             device_send_command("PICO:CMD:STATUS");
         }
 
-        vTaskDelay(pdMS_TO_TICKS(3000));
+        vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
 
@@ -124,22 +126,36 @@ void app_main(void)
     /* 3. Start UART command parsing */
     init_uart_cmd_parsing();
 
-    vTaskDelay(pdMS_TO_TICKS(500));
+    uint32_t waited = 0;
+
+    while (!mqtt_service_all_subscribed())
+    {
+        vTaskDelay(pdMS_TO_TICKS(250));
+        waited += 250;
+        if (waited >= MQTT_SUB_TIMEOUT_MS)
+        {
+            ESP_LOGE("APP", "MQTT subscribe timeout");
+            ESP_LOGE("APP", "RESTARTING....");
+            esp_restart();
+            return;
+        }
+    }
+
     device_connect("PICO", 1);
-    vTaskDelay(pdMS_TO_TICKS(500));
+    vTaskDelay(pdMS_TO_TICKS(5000));
     device_send_command("PICO:LED:EN=1:BLINK=500:POT=0");
     vTaskDelay(pdMS_TO_TICKS(50));
     // device_send_command("PICO:POT=0");
     // vTaskDelay(pdMS_TO_TICKS(50));
 
-    // xTaskCreate(device_monitor_task, "dev_monitor", 4096, NULL, 5, NULL);
+    xTaskCreate(device_monitor_task, "dev_monitor", 4096, NULL, 5, NULL);
 
     ESP_LOGI(__func__, "System ready");
 
     /* 4. Optional: keep main alive (or do nothing) */
     while (1)
     {
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
 

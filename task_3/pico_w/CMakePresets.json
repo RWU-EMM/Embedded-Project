@@ -14,14 +14,14 @@
 
         "RGB_LED_USE_RGBW": "0",
 
-        "WIFI_SSID_2": "NoDevice",
-        "WIFI_PASSWORD_2": "13071307",
+        "WIFI_SSID_3": "NoDevice",
+        "WIFI_PASSWORD_3": "13071307",
 
         "WIFI_SSID_1": "H.O.M.E",
         "WIFI_PASSWORD_1": "HOME2077",
 
-        "WIFI_SSID_0": "WLAN-Pi-1",
-        "WIFI_PASSWORD_0": "raspberry",
+        "WIFI_SSID_2": "WLAN-Pi-1",
+        "WIFI_PASSWORD_2": "raspberry",
 
         "WIFI_SSID": "Wokwi-GUEST",
         "WIFI_PASSWORD": "",
