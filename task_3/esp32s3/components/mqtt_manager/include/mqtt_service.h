@@ -134,6 +134,8 @@ void      mqtt_service_set_default_handler(mqtt_rx_cb_t cb);
 uint8_t         mqtt_service_is_connected(void);
 mqtt_state_t mqtt_service_get_state(void);
 
+uint8_t mqtt_service_all_subscribed(void);
+
 #ifdef __cplusplus
 }
 #endif

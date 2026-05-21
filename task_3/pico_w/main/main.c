@@ -16,7 +16,7 @@
 
 #include "rgb_led.h"
 
-#define SWAP_LED_WITH_RGB 1
+#define SWAP_LED_WITH_RGB 0
 
 #define MQTT_RETRY_INTERVAL_MS 10000
 
@@ -184,6 +184,7 @@ int main()
     init_led(&status_led);
     led_start_blink(&status_led, 250); // Initially blink fast (connecting)
     init_led(&user_led);
+    led_start_blink(&user_led, 250);
 #endif
 
     auth_init();
@@ -435,9 +436,15 @@ void handle_cmd(const char *data)
 
     if (!user_led.en_ctrl)
     {
-        led_off(&user_led);
+
+#if (1 == SWAP_LED_WITH_RGB)
+        rgb_led_off_pixel(&rgb, 1);
+#else
+            led_off(&user_led);
+#endif
         cmd.led.blink_intvl = 100; // reset to default interval when LED is turned off
     }
+
     user_led.blink_interval_ms = cmd.led.blink_intvl;
 
     // POT

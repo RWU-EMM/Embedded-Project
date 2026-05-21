@@ -48,7 +48,23 @@ Before starting, install the following VS Code extensions:
 
 ---
 
-### Step 1 — Launch the ESP32-S3 Simulator
+### Step 1 — Launch the Pico W Simulator
+
+1. Open the Pico W project in VS Code (`Ctrl+K, O` or manually):
+   ```
+   D:\RWU\Embedded-Project\task_3\pico_w
+   ```
+2. Open `pico_w/wokwi/diagram.json` — this automatically triggers the Wokwi simulator.
+3. In the Terminal panel, select the **Serial Monitor** tab.
+4. Set **Monitor Mode** to `TCP`, then set:
+   - **Host:** `localhost`
+   - **Port:** `4010`
+5. Click **Start Monitoring**.
+
+> **Tip:** If logs don't appear, click the **Re-simulate** button in the Wokwi toolbar.
+
+
+### Step 2 — Launch the ESP32-S3 Simulator
 
 1. Open the ESP32-S3 project in VS Code:
    ```
@@ -65,22 +81,6 @@ Before starting, install the following VS Code extensions:
 
 ---
 
-### Step 2 — Launch the Pico W Simulator
-
-1. Open the Pico W project in VS Code (`Ctrl+K, O` or manually):
-   ```
-   D:\RWU\Embedded-Project\task_3\pico_w
-   ```
-2. Open `pico_w/wokwi/diagram.json` — this automatically triggers the Wokwi simulator.
-3. In the Terminal panel, select the **Serial Monitor** tab.
-4. Set **Monitor Mode** to `TCP`, then set:
-   - **Host:** `localhost`
-   - **Port:** `4010`
-5. Click **Start Monitoring**.
-
-> **Tip:** If logs don't appear, click the **Re-simulate** button in the Wokwi toolbar.
-
----
 
 ### Step 3 — Monitor MQTT Topics with Postman *(Recommended)*
 

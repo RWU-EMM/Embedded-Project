@@ -13,23 +13,21 @@
 
 static uint8_t timer_run_state = 0;
 
-static bool IRAM_ATTR led_timer_cb(gptimer_handle_t timer,
-                                   const gptimer_alarm_event_data_t *edata,
-                                   void *user_data)
+static bool IRAM_ATTR led_timer_cb(gptimer_handle_t timer, const gptimer_alarm_event_data_t *edata, void *user_data)
 {
     led_blink_t *led = (led_blink_t *)user_data;
 
-    if ((1 == led->ctrl_en))
+    if (led->ctrl_en)
     {
         led->state = !led->state;
-        gpio_set_level(led->gpio_num, led->state);
+    }
+    else
+    {
+        // ELD's Are Active low
+        led->state = 1; // off
     }
 
-    if ((1 == led->state) && (0 == led->ctrl_en))
-    {
-        led->state = 1; // ELD's Are Active Low
-        gpio_set_level(led->gpio_num, led->state);
-    }
+    gpio_set_level(led->gpio_num, led->state);
 
     return false;
 }
@@ -37,7 +35,7 @@ static bool IRAM_ATTR led_timer_cb(gptimer_handle_t timer,
 esp_err_t init_led_blink(led_blink_t *led, gpio_pull_mode_t mode)
 {
 
-    led->state = 0;
+    led->state = 1;
     led->ctrl_en = DEFAULT_LED_EN;
 
     gpio_config_t io_conf = {
@@ -110,8 +108,13 @@ esp_err_t led_blink_start(led_blink_t *led)
 esp_err_t led_blink_stop(led_blink_t *led)
 {
     led->blink_flag = 0;
-    timer_run_state = 0;
-    return gptimer_stop(led->timer);
+
+    esp_err_t err = gptimer_stop(led->timer);
+
+    led->state = 1; // OFF
+    gpio_set_level(led->gpio_num, led->state);
+
+    return err;
 }
 
 uint8_t get_timer_run_state()
