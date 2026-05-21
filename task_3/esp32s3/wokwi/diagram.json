@@ -3,7 +3,7 @@
   "author": "Yash Sangale",
   "editor": "wokwi",
   "parts": [
-    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": -0.18, "left": 4.57, "attrs": {} },
+    { "type": "board-esp32-s3-devkitc-1", "id": "esp", "top": -19.38, "left": 4.57, "attrs": {} },
     {
       "type": "wokwi-led",
       "id": "led1",
