@@ -49,7 +49,9 @@
       "attrs": { "value": "1000" }
     },
     { "type": "wokwi-neopixel", "id": "rgb1", "top": -22.7, "left": -116.2, "attrs": {} },
-    { "type": "wokwi-neopixel", "id": "rgb2", "top": -61.1, "left": -116.2, "attrs": {} }
+    { "type": "wokwi-neopixel", "id": "rgb2", "top": -61.1, "left": -116.2, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "rgb3", "top": -89.9, "left": -241, "attrs": {} },
+    { "type": "wokwi-neopixel", "id": "rgb4", "top": -89.9, "left": -173.8, "attrs": {} }
   ],
   "connections": [
     [ "pico:GP0", "$serialMonitor:RX", "", [] ],
@@ -72,7 +74,13 @@
     [ "pico:GP1", "rgb1:DIN", "gold", [ "h-19.2", "v-48" ] ],
     [ "rgb1:DOUT", "rgb2:DIN", "orange", [ "h-9.6", "v-20.1", "h57.6", "v-28.8" ] ],
     [ "rgb1:VSS", "rgb2:VSS", "black", [ "v-0.9", "h18.4", "v-38.4" ] ],
-    [ "r2:2", "rgb2:VDD", "green", [ "h0", "v-37.2" ] ]
+    [ "r2:2", "rgb2:VDD", "green", [ "h0", "v-37.2" ] ],
+    [ "rgb2:DOUT", "rgb4:DIN", "green", [ "h-9.6", "v-39.3" ] ],
+    [ "rgb4:VSS", "rgb2:VSS", "black", [ "v-0.9", "h76", "v28.8" ] ],
+    [ "rgb3:VSS", "rgb4:VSS", "black", [ "v8.7", "h28" ] ],
+    [ "rgb2:VDD", "rgb4:VDD", "green", [ "h-9.6", "v-48", "h-48" ] ],
+    [ "rgb4:DOUT", "rgb3:DIN", "green", [ "h-19.2", "v-10.5" ] ],
+    [ "rgb3:VDD", "rgb4:VDD", "green", [ "h-19.2", "v-19.2", "h48" ] ]
   ],
   "dependencies": {}
 }
