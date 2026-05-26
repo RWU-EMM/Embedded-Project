@@ -1,0 +1,13 @@
+# Target labels
+ enc_bootloader_mbedtls
+# Source files and their labels
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/CMakeFiles/enc_bootloader_mbedtls
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/CMakeFiles/enc_bootloader_mbedtls.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/CMakeFiles/enc_bootloader_mbedtls-complete.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-build.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-configure.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-download.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-install.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-mkdir.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-patch.rule
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-build/enc_bootloader_mbedtls/src/enc_bootloader_mbedtls-stamp/enc_bootloader_mbedtls-update.rule

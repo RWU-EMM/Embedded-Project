@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/CMakeFiles/picotool-populate"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/CMakeFiles/picotool-populate.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/CMakeFiles/picotool-populate-complete.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-build.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-configure.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-download.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-install.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-mkdir.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-patch.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-test.rule"
+		},
+		{
+			"file" : "D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool-subbuild/picotool-populate-prefix/src/picotool-populate-stamp/picotool-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"picotool-populate"
+		],
+		"name" : "picotool-populate"
+	}
+}
