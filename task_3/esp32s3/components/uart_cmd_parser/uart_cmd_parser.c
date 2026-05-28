@@ -116,6 +116,5 @@ void init_uart_cmd_parsing(void)
 
     uart_driver_install(UART_PORT, BUF_SIZE * 2, 0, 0, NULL, 0);
     uart_param_config(UART_PORT, &uart_config);
-
     xTaskCreate(uart_parse_cmd_task, "uart_cmd_task", 4096, NULL, 5, NULL);
 }

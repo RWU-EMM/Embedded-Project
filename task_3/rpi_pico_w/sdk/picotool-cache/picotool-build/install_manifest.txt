@@ -1,0 +1,7 @@
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/picotool.exe
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/picotoolTargets.cmake
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/picotoolTargets-release.cmake
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/picotoolConfig.cmake
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/picotoolConfigVersion.cmake
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/enc_bootloader.elf
+D:/RWU/Embedded-Project/task_3/rpi_pico_w/sdk/picotool-cache/picotool/enc_bootloader_mbedtls.elf
