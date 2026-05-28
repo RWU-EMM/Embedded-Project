@@ -23,6 +23,5 @@ add_dependencies(rgb_led rgb_led_ws2812_pio_h)
 target_link_libraries(rgb_led PRIVATE
     pico_stdlib
     hardware_pio
-    project_config
     pico_cyw43_arch_none
 )

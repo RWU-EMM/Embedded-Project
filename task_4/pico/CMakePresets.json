@@ -10,12 +10,12 @@
         "PICO_SDK_PATH": "D:/RWU/Embedded-Project/rpi_pico_sdk/pico-sdk",
         "CMAKE_PREFIX_PATH": "D:/RWU/Embedded-Project/rpi_pico_sdk/picotool",
         "PICO_BOARD": "pico_w",
-        "PICO_DRIVE": "RPI-RP2"
-
+        "PICO_DRIVE": "RPI-RP2",
+        "WIFI_SSID": "Wokwi-GUEST",
+        "WIFI_PASSWORD": ""
       }
     }
   ],
-
   "buildPresets": [
     {
       "name": "default",

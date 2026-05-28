@@ -534,7 +534,6 @@ char *json_data_parse_to_serial(const cJSON *root)
 
     strcat(out, token->valuestring);
 
-
     // iterate all commands
     for (size_t i = 0; i < g_cmd_count; i++)
     {
@@ -548,7 +547,6 @@ char *json_data_parse_to_serial(const cJSON *root)
             continue;
         }
 
-        
         // SPLCMD special handling
         if (cmd == &spl_cmds)
         {
@@ -566,7 +564,6 @@ char *json_data_parse_to_serial(const cJSON *root)
                         continue;
                     }
 
-                    
                     // HELP=["ALL"]
                     cJSON *help_it = cJSON_GetArrayItem(item, 0);
 
@@ -577,7 +574,6 @@ char *json_data_parse_to_serial(const cJSON *root)
                         continue;
                     }
 
-                    
                     // HELP=["LED","RGB"]
                     cJSON *help = NULL;
 
@@ -596,7 +592,6 @@ char *json_data_parse_to_serial(const cJSON *root)
                     continue;
                 }
 
-                
                 // SPLCMD actions
                 if (cJSON_IsNumber(item) && item->valuedouble == 1)
                 {
@@ -625,7 +620,7 @@ char *json_data_parse_to_serial(const cJSON *root)
 
         cJSON_ArrayForEach(item, obj)
         {
-            
+
             // GET array
             if (strcasecmp(item->string, "get") == 0)
             {
@@ -657,7 +652,6 @@ char *json_data_parse_to_serial(const cJSON *root)
 
                 continue;
             }
-
 
             // normal fields
             const field_desc_t *field = find_field_by_json_key(cmd, item->string);

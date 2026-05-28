@@ -14,7 +14,6 @@ target_include_directories(json_parser PRIVATE
 
 target_link_libraries(json_parser PRIVATE
     pico_stdlib   # for core functionality
-    mqtt_client   # for MQTT-related functionality
-    cjson
     pico_cyw43_arch_none # we need Wifi to access the GPIO, but we don't need anything else
+    cjson
 )

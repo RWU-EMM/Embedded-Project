@@ -1,10 +1,24 @@
+# == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
+if(WIN32)
+    set(USERHOME $ENV{USERPROFILE})
+else()
+    set(USERHOME $ENV{HOME})
+endif()
+set(sdkVersion 2.2.0)
+set(toolchainVersion 14_2_Rel1)
+set(picotoolVersion 2.2.0-a4)
+set(picoVscode ${USERHOME}/.pico-sdk/cmake/pico-vscode.cmake)
+if (EXISTS ${picoVscode})
+    include(${picoVscode})
+endif()
+# ====================================================================================
 cmake_minimum_required(VERSION 3.13)
 
 set(PICO_BOARD pico_w)
 
 include(pico_sdk_import.cmake)
 
-project(task_3 C CXX ASM)
+project(task_4_hw C CXX ASM)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -12,7 +26,7 @@ set(CMAKE_CXX_STANDARD 17)
 # -------------------------------
 # SDK check
 # -------------------------------
-if (PICO_SDK_VERSION_STRING VERSION_LESS "2.2.0")
+if(PICO_SDK_VERSION_STRING VERSION_LESS "2.2.0")
     message(FATAL_ERROR "Pico SDK >= 2.2.0 required")
 endif()
 
@@ -25,7 +39,19 @@ pico_sdk_init()
 # -------------------------------
 # Global Project Config (SHARED)
 # -------------------------------
+add_library(project_config INTERFACE)
 
+target_compile_definitions(project_config INTERFACE
+    WIFI_SSID="${WIFI_SSID}"
+    WIFI_PASSWORD="${WIFI_PASSWORD}"
+
+)
+
+if ("${WIFI_PASSWORD}" STREQUAL "")
+    target_compile_definitions(project_config INTERFACE WIFI_AUTH=CYW43_AUTH_OPEN)
+else()
+    target_compile_definitions(project_config INTERFACE WIFI_AUTH=CYW43_AUTH_WPA2_AES_PSK)
+endif()
 
 # -------------------------------
 # External libraries
@@ -43,10 +69,18 @@ add_subdirectory(libs/cjson)
 # -------------------------------
 # Components : make sure add also in target_link_libraries(${PROJECT_NAME}
 # -------------------------------
+add_subdirectory(components/wifi_driver)
 add_subdirectory(components/led_handler)
 add_subdirectory(components/rgb_led)
 add_subdirectory(components/json_parser)
 add_subdirectory(components/pot_driver)
+add_subdirectory(components/servo_driver)
+add_subdirectory(components/uart_driver)
+add_subdirectory(components/gpio_driver)
+add_subdirectory(components/button_handler)
+add_subdirectory(components/serial_data_parser)
+add_subdirectory(components/buzzer_driver)
+add_subdirectory(components/dht11_driver)
 
 # -------------------------------
 # Main executable
@@ -70,12 +104,20 @@ target_link_libraries(${PROJECT_NAME}
     pico_lwip_mqtt
     pico_mbedtls
     pico_lwip_mbedtls
+    project_config
     cjson
+    wifi_driver
     led_handler
     rgb_led
     json_parser
-    auth
     pot_driver
+    servo_driver
+    uart_driver
+    serial_data_parser
+    gpio_driver
+    button_handler
+    buzzer_driver
+    dht11_driver
 )
 
 
@@ -99,18 +141,18 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
     # Copy UF2
     COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.uf2
-        ${WOKWI_DIR}/${PROJECT_NAME}.uf2
+    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.uf2
+    ${WOKWI_DIR}/${PROJECT_NAME}.uf2
 
     # Copy ELF (optional)
     COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.elf
-        ${WOKWI_DIR}/${PROJECT_NAME}.elf
+    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.elf
+    ${WOKWI_DIR}/${PROJECT_NAME}.elf
 
     # Copy BIN (optional)
     COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.bin
-        ${WOKWI_DIR}/${PROJECT_NAME}.bin
+    ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.bin
+    ${WOKWI_DIR}/${PROJECT_NAME}.bin
 
     COMMENT "Copying build outputs to Wokwi folder"
 )
@@ -123,9 +165,9 @@ endif()
 add_custom_target(upload
     COMMAND ${CMAKE_COMMAND} -E echo "Uploading UF2 to Pico..."
     COMMAND powershell -ExecutionPolicy Bypass
-            -File "${CMAKE_SOURCE_DIR}/upload.ps1"
-            "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.uf2"
-            "${PICO_DRIVE}"
+    -File "${CMAKE_SOURCE_DIR}/upload.ps1"
+    "${CMAKE_BINARY_DIR}/${PROJECT_NAME}.uf2"
+    "${PICO_DRIVE}"
     DEPENDS ${PROJECT_NAME}
 )
 # -------------------------------

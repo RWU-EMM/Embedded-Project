@@ -37,6 +37,14 @@ const field_desc_t rgb_fields[] = {
         .max = 1,
     },
     {
+        .name = "IDX",
+        .json_key = "idx",
+        .type = _FIELD_TYPE_INT,
+        .ops = FIELD_OP_SET ,
+        .min = 1,
+        .max = 4,
+    },
+    {
         .name = "BLINK",
         .json_key = "blink_intvl",
         .type = _FIELD_TYPE_INT,
@@ -110,6 +118,14 @@ const field_desc_t servo_fields[] = {
         .ops = FIELD_OP_SET | FIELD_OP_GET,
         .min = 0,
         .max = 1,
+    },
+    {
+        .name = "IDX",
+        .json_key = "idx",
+        .type = _FIELD_TYPE_INT,
+        .ops = FIELD_OP_SET | FIELD_OP_GET,
+        .min = 1,
+        .max = 4,
     },
     {
         .name = "ANGLE",

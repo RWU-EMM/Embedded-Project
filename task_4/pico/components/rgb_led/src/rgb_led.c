@@ -106,7 +106,12 @@ void init_rgb_led(rgb_led_t *dev)
     );
 
     rgb_led_clear(dev);
-    // rgb_led_update(dev);
+    for (size_t i = 0; i < dev->led_count; i++)
+    {
+        rgb_led_off_pixel(dev,dev->led_count-1);
+    }
+    
+    rgb_led_update(dev);
 }
 
 void rgb_led_clear(rgb_led_t *dev)
@@ -118,7 +123,7 @@ void rgb_led_clear(rgb_led_t *dev)
     }
 }
 
-void  rgb_led_update(rgb_led_t *dev)
+void rgb_led_update(rgb_led_t *dev)
 {
     uint32_t now = to_ms_since_boot(get_absolute_time());
 
@@ -241,3 +246,4 @@ void rgb_led_show(rgb_led_t *dev)
     // WS2812 reset time (~300us)
     sleep_us(300);
 }
+

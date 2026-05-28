@@ -1,0 +1,9 @@
+[wokwi]
+version = 1
+
+firmware = "task_4_sim.uf2"
+elf = "task_4_sim.elf"
+uf2 = "task_4_sim.uf2"
+
+serialMonitor = true
+rfc2217ServerPort = 4010

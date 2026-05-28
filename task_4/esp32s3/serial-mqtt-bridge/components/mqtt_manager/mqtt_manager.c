@@ -36,8 +36,8 @@
 
 #include "cJSON.h"
 
-#define MQTT_BROKER_URL_2 "broker.emqx.io"
-#define MQTT_BROKER_URL  "141.69.95.10"
+#define MQTT_BROKER_URL "broker.emqx.io"
+#define MQTT_BROKER_URL_2  "141.69.95.10"
 
 #define WIFI_CONN_TIMEOUT_US 5 * 1000 * 1000
 
@@ -167,7 +167,7 @@ static void on_broadcast(const char *topic, const char *data, int data_len)
 
 static void on_unmatched(const char *topic, const char *data, int data_len)
 {
-    ESP_LOGD(__func__, "unmatched [%s] len=%d", topic, data_len);
+    ESP_LOGW(__func__, "unmatched [%s] len=%d", topic, data_len);
 }
 
 /* Transport-switch task
@@ -198,8 +198,8 @@ void init_mqtt_client()
     nvs_initialize();
     // esp_start_wifi_driver(1, "ESP_AP", "12144121", "WLAN-Pi-1", "raspberry");
     // esp_start_wifi_driver(1, "ESP_AP", "espap12141214", "RWUioT", "ioTistGaPSKistB");
-    esp_start_wifi_driver(1, "ESP_AP", "12144121", "Wokwi-GUEST", "");
-    // esp_start_wifi_driver(1, "ESP_AP", "12144121", "H.O.M.E", "HOME2077");
+    // esp_start_wifi_driver(1, "ESP_AP", "12144121", "Wokwi-GUEST", "");
+    esp_start_wifi_driver(1, "ESP_AP", "12144121", "NoDevice", "13071307");
 
     int64_t start_time = esp_timer_get_time(); // us
     while (!wifi_connected)
@@ -235,10 +235,4 @@ void init_mqtt_client()
 
     mqtt_service_set_default_handler(on_unmatched);
 
-    // /* 2. Init device layer (registers handlers) */
-    // init_device_handler();
-
-    // /* Subscribe — stored internally; restored automatically on reconnect */
-    // ESP_ERROR_CHECK(mqtt_service_subscribe("devices/esp32s3-node-01/cmd", 1));
-    // ESP_ERROR_CHECK(mqtt_service_subscribe("devices/broadcast/#", 0));
 }

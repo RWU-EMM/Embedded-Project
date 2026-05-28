@@ -154,8 +154,8 @@ esp_err_t init_uart_driver(uart_driver_handle_t *handle)
     //@todo: do something about rx tx gpio
     // @note: Set UART pins (using UART0 default pins ie no changes.)
     uart_set_pin(handle->config.uart_port,
-                 UART_PIN_NO_CHANGE,
-                 UART_PIN_NO_CHANGE,
+                 handle->config.tx_pin,
+                 handle->config.rx_pin,
                  UART_PIN_NO_CHANGE,
                  UART_PIN_NO_CHANGE);
 

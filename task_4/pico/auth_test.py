@@ -51,7 +51,7 @@ def gen_step2(in_key, out_key, token):
 # MAIN (INTERACTIVE)
 # ==========================
 def main():
-    print("=== MQTT AUTH TOOL ===")
+    print("=== MQTT w r  TOOL ===")
 
     # STEP 1
     in_key = input("Enter IN_KEY: ").strip()
