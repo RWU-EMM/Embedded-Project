@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <math.h>
 
 #include "pico/stdlib.h"
 #include "pico/cyw43_arch.h"
@@ -17,7 +18,7 @@
 #include "serial_data_parser.h"
 #include "json_parser.h"
 
-#define SERVO_GPIO 7
+#define SERVO_GPIO 20
 
 #define BUTTON_1_GPIO 10
 #define BUTTON_2_GPIO 11
@@ -97,7 +98,7 @@ int main(void)
     init_rgb_led(&rgb);
     // rgb_led_on_pixel(&rgb, 0, 255, 0, 0);
     // rgb_led_on_pixel(&rgb, 1, 0, 255, 0);
-    rgb_led_on_pixel(&rgb, 2, 0, 0, 255);
+    // rgb_led_on_pixel(&rgb, 2, 0, 0, 255);
 
     servo_driver_init();
     servo1 = servo_attach(SERVO_GPIO);
@@ -118,7 +119,7 @@ int main(void)
 
         button_press_handler();
 
-        servo_update_handler();
+        // servo_update_handler();
 
         rgb_led_update(&rgb);
 
@@ -126,10 +127,10 @@ int main(void)
         {
             last_dht_tx = get_absolute_time();
 
-            send_temp_hum();
+            // send_temp_hum();
         }
 
-        sleep_ms(100);
+        sleep_ms(10);
 
         tight_loop_contents();
     }
@@ -195,10 +196,15 @@ static void process_uart_data(void)
         {
             printf("RX: %s\n", parser.packet.data);
 
+            // uart_send_line(parser.packet.data);
+
             if (json_parse((const char *)parser.packet.data, parser.packet.len, &json_packet))
             {
-                printf("Valid JSON\n");
                 execute_json_packet();
+            }
+            else
+            {
+                uart_send_line("invalid json");
             }
             serial_data_parser_reset(&parser);
         }
@@ -247,7 +253,7 @@ static void rgb_apply_color(uint8_t led, uint8_t idx)
         break;
     }
 
-    rgb_led_on_pixel(&rgb, led, r, g, b);
+    rgb_led_on_pixel(&rgb, led, g, r, b);
 }
 
 static void button_callback(uint gpio, button_event_t event, void *user_data)
@@ -333,7 +339,14 @@ void button_press_handler()
 {
     if (button.raw_button)
     {
-        uint8_t led_idx = get_button_index(button.raw_button);
+        int led_idx = get_button_index(button.raw_button);
+
+        if (led_idx < 0)
+        {
+            button.raw_button = 0;
+            return;
+        }
+
         uint8_t color_idx = ++g_led_color_idx[led_idx];
 
         color_idx %= 8;
@@ -342,7 +355,7 @@ void button_press_handler()
         rgb_apply_color(led_idx, color_idx);
 
         char resp[64];
-        snprintf(resp, sizeof(resp), "ACK:LED:%d:%s", led_idx, g_colors[color_idx]);
+        snprintf(resp, sizeof(resp), "ACK:LED:%d:%s", led_idx+1, g_colors[color_idx]);
         uart_send_line(resp);
 
         button.raw_button = 0;
@@ -351,15 +364,18 @@ void button_press_handler()
 
 void servo_update_handler()
 {
-    static float prvs_servo_angle = 0;
-    if (abs(prvs_servo_angle - current_servo_angle) > 5)
+    static float prvs_servo_angle = 180.0f;
+
+    if (fabsf(prvs_servo_angle - current_servo_angle) > 5)
     {
         servo_write_angle(servo1, current_servo_angle);
 
         prvs_servo_angle = current_servo_angle;
 
         char resp[64];
-        snprintf(resp, sizeof(resp), "ACK:SERVO:%d", current_servo_angle);
+
+        snprintf(resp, sizeof(resp), "ACK:SERVO:%d", (int)current_servo_angle);
+
         uart_send_line(resp);
     }
 }
@@ -414,7 +430,7 @@ void execute_json_packet()
     }
 
     // SERVO:angle
-    else if (strncmp(cmd, "SERVO:", 7) == 0)
+    else if (strncmp(cmd, "SERVO:", 6) == 0)
     {
         int angle = 0;
 
@@ -431,6 +447,13 @@ void execute_json_packet()
             }
 
             current_servo_angle = angle;
+            servo_write_angle(servo1, angle);
+
+            char resp[64];
+
+            snprintf(resp, sizeof(resp), "ACK:SERVO:%d", angle);
+
+            uart_send_line(resp);
         }
     }
 
@@ -453,7 +476,6 @@ void execute_json_packet()
 
     memset(&json_packet, 0, sizeof(json_packet));
 }
-
 
 static void send_temp_hum(void)
 {

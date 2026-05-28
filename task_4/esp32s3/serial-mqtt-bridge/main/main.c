@@ -60,7 +60,7 @@ static void uart_rx_cb(uint8_t *data, uint16_t len)
 
     cJSON_AddStringToObject(root, "token", "iem2026");
 
-    cJSON_AddStringToObject(root, "source", "nano");
+    cJSON_AddStringToObject(root, "source", "esp32");
 
     cJSON_AddNumberToObject(root, "seq", g_seq++);
 
@@ -83,8 +83,9 @@ static void uart_rx_cb(uint8_t *data, uint16_t len)
 static void mqtt_cmd_cb(const char *topic, const char *data, int data_len)
 {
     ESP_LOGI("MQTT<<", "[%s] %.*s", topic, data_len, data);
-
+    
     uart_send(&s_cli_uart, (const uint8_t *)data, data_len);
+    uart_send(&s_cli_uart, (const uint8_t *)"\n", 1);
 }
 
 void app_main(void)

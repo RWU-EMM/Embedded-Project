@@ -103,7 +103,7 @@ void my_mqtt_cb(const char *topic, const char *data)
     // ACK:LED:n:COLOR
     //
 
-    if (strncmp(msg, "ACK:LED:", 9) == 0)
+    if (strncmp(msg, "ACK:LED:", 8) == 0)
     {
         int led = 0;
         char color[16] = {0};
@@ -129,9 +129,9 @@ void my_mqtt_cb(const char *topic, const char *data)
             else
                 idx = 0;
 
-            if (led >= 1 && led <= 4)
+            if (led >= 0 && led <= 4)
             {
-                g_led_color_idx[led - 1] = idx;
+                g_led_color_idx[led] = idx;
 
                 uint8_t r = 0;
                 uint8_t g = 0;
@@ -142,24 +142,30 @@ void my_mqtt_cb(const char *topic, const char *data)
                 case 1:
                     r = 255;
                     break;
+
                 case 2:
                     g = 255;
                     break;
+
                 case 3:
                     b = 255;
                     break;
+
                 case 4:
                     r = 255;
                     g = 255;
                     break;
+
                 case 5:
                     g = 255;
                     b = 255;
                     break;
+
                 case 6:
                     r = 255;
                     b = 255;
                     break;
+
                 case 7:
                     r = 255;
                     g = 255;
@@ -167,7 +173,7 @@ void my_mqtt_cb(const char *topic, const char *data)
                     break;
                 }
 
-                rgb_led_on_pixel(&rgb, led - 1, r, g, b);
+                rgb_led_on_pixel(&rgb, --led, r, g, b);
 
                 printf("LED%d -> %s\n", led, color);
             }
@@ -178,13 +184,16 @@ void my_mqtt_cb(const char *topic, const char *data)
     // ACK:SERVO:angle
     //
 
-    else if (strncmp(msg, "ACK:SERVO:", 11) == 0)
+    else if (strncmp(msg, "ACK:SERVO:", 10) == 0)
     {
         int angle = 0;
 
         if (sscanf(msg, "ACK:SERVO:%d", &angle) == 1)
         {
+
             current_servo_angle = angle;
+
+            servo_write_angle(servo1, angle);
 
             printf("SERVO -> %d\n", angle);
         }
@@ -333,7 +342,7 @@ int main()
 
     bool mqtt_subscribed = false;
 
-    static float priv_servo_angle = 0.0f;
+    static float priv_servo_angle = 180.0f;
 
     printf("System Ready\n");
 
@@ -343,7 +352,7 @@ int main()
 
         mqtt_client_poll();
 
-        if (!mqtt_is_connected())
+        while (!mqtt_is_connected())
         {
             if (!mqtt_is_connecting())
             {
@@ -482,8 +491,56 @@ static void button_callback(uint gpio, button_event_t event, void *user_data)
 {
     (void)user_data;
 
-    if (event == BUTTON_EVENT_SHORT_PRESS)
+    if (event != BUTTON_EVENT_SHORT_PRESS)
     {
-        printf("GPIO %u SHORT PRESS\n", gpio);
+        return;
     }
+
+    int led = 0;
+
+    switch (gpio)
+    {
+    case BUTTON_1_GPIO:
+        led = 1;
+        break;
+
+    case BUTTON_2_GPIO:
+        led = 2;
+        break;
+
+    case BUTTON_3_GPIO:
+        led = 3;
+        break;
+
+    case BUTTON_4_GPIO:
+        led = 4;
+        break;
+
+    default:
+        return;
+    }
+
+    char cmd[32];
+
+    snprintf(cmd, sizeof(cmd), "LED:%d:NEXT", led);
+
+    cJSON *root = parse_serial_to_json(cmd, strlen(cmd));
+
+    if (!root)
+    {
+        return;
+    }
+
+    char *json = cJSON_PrintUnformatted(root);
+
+    if (json)
+    {
+        printf("MQTT TX [%s]: %s\n", g_cmd_topic, json);
+
+        mqtt_client_pub(g_cmd_topic, json);
+
+        free(json);
+    }
+
+    cJSON_Delete(root);
 }
