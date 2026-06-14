@@ -1,0 +1,43 @@
+<mxfile host="65bd71144e">
+    <diagram id="XOTNRszg4Cgc3ulTuF9K" name="Page-1">
+        <mxGraphModel dx="1233" dy="760" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="16" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=default;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=14;fontColor=default;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="81" width="560" height="520" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=14;fontColor=default;" edge="1" parent="1" source="2" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="Signal Generator" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="201" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="ADC Input" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="321" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="DAC" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.logic_gates.buffer2;rounded=0;strokeColor=default;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontColor=default;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="211" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=14;fontColor=default;" edge="1" parent="1" source="10" target="4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="ADC" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.logic_gates.buffer2;rounded=0;strokeColor=default;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontColor=default;fillColor=default;flipH=1;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="331" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Based on Sampling Freqency Timer" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Helvetica;fontSize=14;fontColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="121" width="242.5" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="UART" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.twoWayArrow;dy=0.6;dx=35;rounded=0;strokeColor=default;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontColor=default;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="451" width="390" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#434445;aspect=fixed;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.vvd.wi_fi;rounded=0;strokeWidth=2;fontFamily=Helvetica;fontSize=14;fontColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="550" y="81" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="UDP Socket" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;rounded=0;strokeColor=default;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=14;fontColor=default;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="630" y="10" width="120" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
