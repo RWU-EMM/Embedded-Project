@@ -1,2 +1,5 @@
 rpi_pico_sdk/
 build/
+filter/.devcontainer
+filter/.vscode
+filter/build
