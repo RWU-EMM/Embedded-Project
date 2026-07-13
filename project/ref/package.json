@@ -1,0 +1,12 @@
+{
+  "name": "dsm-udp-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node udp-ws-bridge.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

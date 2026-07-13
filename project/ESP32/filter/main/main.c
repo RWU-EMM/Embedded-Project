@@ -12,6 +12,8 @@
 #include "coeff_loader.h"
 #include "fgen_sim.h"
 
+#include "wifi_udp_handler.h"
+
 #include "usb_cdc_acm_driver.h"
 
 #include "freertos/FreeRTOS.h"
@@ -28,6 +30,13 @@
 #include "esp_timer.h"
 #include "esp_log.h"
 #include "esp_err.h"
+
+#if (ACTIVE_SEND_MODE == SEND_MODE_UDP)
+static uint8_t s_batch_buf[sizeof(dsm_batch_hdr_t) + UDP_BATCH_SIZE * sizeof(dsm_packet_t)] = {0};
+static uint32_t s_batch_idx = 0;
+static uint32_t s_batch_id = 0;
+_Static_assert(sizeof(dsm_batch_hdr_t) == 6, "batch hdr size invalid");
+#endif
 
 #define DEFAULT_SIM_AMP 100
 #define DEFAULT_SIM_MODE _FGEN_SIM_IMP
@@ -326,9 +335,7 @@ static void uart_cmd_process_line(char *line)
     {
         return;
     }
-    
-    
-    
+
     /* coeff-load passthrough mode */
     if (g_fts_cfg.coeff_load_pending)
     {
@@ -519,16 +526,27 @@ void app_main(void)
 
     s_fts_task = xTaskGetCurrentTaskHandle();
 
-    // USB CDC
+    // UDP Init
 
+#if (ACTIVE_SEND_MODE == SEND_MODE_UDP)
+    wifi_udp_handler_config_t wifi_udp_handler_config = {
+        // .target_ip = "192.168.0.158",
+        .target_ip = "10.17.36.16",
+        .target_port = 2812,
+    };
+    wifi_udp_handler_init(&wifi_udp_handler_config);
+#endif
+
+#if (ACTIVE_SEND_MODE == SEND_MODE_USB)
+    // USB CDC
     usb_cdc_driver_config_t usb_cfg = {
         .enable_port_0 = true,
         .enable_port_1 = false,
     };
     ESP_ERROR_CHECK(usb_cdc_driver_init(&usb_cfg));
+#endif
 
     // ADC(always init so it is ready when "input adc" is commanded)
-
     adc_init();
 
     // UART command interface(uses your uart_driver component) * UART1, 115200 - 8N1, GPIO 17 TX / 18 RX  – adjust pins as needed
@@ -658,19 +676,47 @@ void app_main(void)
         s_dsm_pkt.crc16 = dsm_calc_xor16((const uint8_t *)&s_dsm_pkt.sig,
                                          DSM_PACKET_SIZE_BYTES - 2);
 
-        /*
-         * TRANSMIT OVER USB CDC
-         *  */
+#if (ACTIVE_SEND_MODE == SEND_MODE_USB)
+        //  TRANSMIT OVER USB CDC
         if (usb_cdc_is_connected(USB_CDC_PORT_0))
         {
             usb_cdc_write(USB_CDC_PORT_0,
                           (const uint8_t *)&s_dsm_pkt,
                           sizeof(s_dsm_pkt));
         }
+#endif
 
-        /* ==
-         * DIAGNOSTICS  (compiled out when ENABLE_DEBUG_LOGS == 0)
-         *  */
+#if (ACTIVE_SEND_MODE == SEND_MODE_UDP)
+
+        //  BATCH INTO UDP BUFFER
+        memcpy(s_batch_buf + sizeof(dsm_batch_hdr_t) + (s_batch_idx * sizeof(dsm_packet_t)),
+
+               &s_dsm_pkt,
+
+               sizeof(dsm_packet_t));
+
+        s_batch_idx++;
+
+        if (s_batch_idx == UDP_BATCH_SIZE)
+
+        {
+
+            dsm_batch_hdr_t hdr;
+
+            hdr.batch_id = s_batch_id++;
+
+            hdr.count = UDP_BATCH_SIZE;
+
+            memcpy(s_batch_buf, &hdr, sizeof(hdr));
+
+            wifi_udp_handler_send(s_batch_buf, sizeof(s_batch_buf));
+
+            s_batch_idx = 0;
+        }
+
+#endif
+
+        // DIAGNOSTICS  (compiled out when ENABLE_DEBUG_LOGS == 0)
 #if (ENABLE_DEBUG_LOGS == 1)
         exec_sum += (esp_timer_get_time() - t1);
         cnt++;

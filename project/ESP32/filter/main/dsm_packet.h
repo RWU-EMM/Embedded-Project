@@ -1,8 +1,33 @@
 #ifndef DSM_PACKET_H
 #define DSM_PACKET_H
 
+#include <stdint.h>
+#include <stdio.h>
+
+#define SEND_MODE_USB 0
+#define SEND_MODE_UDP 1
+
+#define ACTIVE_SEND_MODE SEND_MODE_UDP
+
+#define UDP_BATCH_SIZE 20   
+
 #define DSM_SIGNATURE (0xADU)
+
+#if (ACTIVE_SEND_MODE == SEND_MODE_UDP)
+#define DSM_PACKET_SIZE_BYTES (20U)
+#else
 #define DSM_PACKET_SIZE_BYTES (18U)
+#endif
+
+#if (ACTIVE_SEND_MODE == SEND_MODE_UDP)
+#pragma pack(push, 1)
+typedef struct
+{
+    uint32_t batch_id;
+    uint16_t count;
+} dsm_batch_hdr_t;
+#pragma pack(pop)
+#endif
 
 #pragma pack(push, 2)
 
@@ -10,6 +35,10 @@ typedef struct
 {
     uint8_t sig;
     uint8_t n;
+
+#if (ACTIVE_SEND_MODE == SEND_MODE_UDP)
+    uint16_t seq;
+#endif
 
     int16_t adc_in;
     int16_t fgen_out;
@@ -56,7 +85,5 @@ uint16_t dsm_calc_xor16(const uint8_t *buf, size_t len)
 
     return crc;
 }
-
-
 
 #endif // DSM_PACKET_H
