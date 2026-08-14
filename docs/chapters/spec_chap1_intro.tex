@@ -2,6 +2,7 @@
 %   CHAPTER 1: INTRODUCTION
 % =====================================================================
 
+\graphicspath{figures}
 \chapter{Introduction}
 \label{chap:introduction}
 
@@ -13,26 +14,57 @@
 \toprule
 Version & Date & Author & Remarks \\
 \midrule
-1.0 & January 22, 2026 & Y. Sangale & Initial template draft \\
-\midrule
-1.0 & April 14, 2026 & Y. Sangale & FPU Specs draft \\
+1.0 & August 14, 2026 & N. Karia & Initial template draft \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\section{Purpose of Document}
-This document defines the first specification of the \gls{riscv} single-instruction-bit microcontroller, covering architectural, electrical, and functional aspects. Revision 1.1 adds the Floating-Point Unit (FPU) specification as an additional design element.
 
-\section{Scope}
-The specification outlines the design decisions, \gls{isa} subset, interfaces, and architectural details of the \gls{riscv} \gls{SoC}. This revision extends the scope to include the IEEE 754-2008 compliant double-precision FPU.
+\section{Digital Filters}
+Digital filters are a core building block of embedded signal processing, they're used to remove noise, shape frequency response, and condition signals before further analysis or control can be carried out. Designing and verifying such filters is normally a two-stage process: engineers first simulate filter behavior offline in tools like MATLAB, then separately flash and test the filter on a target hardware, with no direct, live comparison between the simulated and actual output. This gap between simulation and real hardware behavior can hide problems that only appear at runtime, such as fixed-point rounding errors, timing jitter, or incorrect coefficient scaling.
 
+\section{Problem Statement}
+Evaluating a digital filter running on embedded hardware presents several practical challenges that this project set out to solve:
 
-\section{Reference Documents}
 \begin{itemize}
-    \item \gls{riscv} Unprivileged \gls{isa} Specification, Volume I
-    \item \gls{riscv} Privileged Architecture Specification
-    \item IEEE 754-2008: Standard for Floating-Point Arithmetic
-    \item https://docs.riscv.org/reference/isa/unpriv/f-st-ext.html
-    \item RWU “Specification Document Preparation Guidelines”
+  \item \textbf{Lack of real-time observability:} A filter running on a microcontroller produces output that is invisible to the developer unless it is explicitly captured and transmitted somewhere for inspection.
+  \item \textbf{Reconfiguration overhead:} Changing filter type or coefficients on typical embedded setups usually requires re-flashing firmware, which breaks the test-and-observe loop and slows down iterative filter design and tuning.
+  \item \textbf{No unified visualization layer:} Even when data can be captured, there is typically no lightweight, accessible way to visualize multiple synchronized channels at once, and adjust display parameters (such as sample window size) without recompiling anything.
 \end{itemize}
+
+\section{Solution}
+The proposed Solution addresses that gap by building a Real-Time Digital Filter Evaluation Platform: a system that generates a known test signal, feeds it into a target microcontroller running a digital filter, captures the filtered output, and streams both signals to a browser-based dashboard for live visual inspection. The platform is built around an ESP32 acting as a signal generator, acquisition unit and a network bridg. A separate target MCU implements the filter under test. Results are streamed wirelessly over UDP to a Node.js bridge and rendered in real time in a web browser.
+
+
+\chapter{Methodology}
+\label{chap:methodology}
+This section describes, how the platform was designed and validated, covering system architecture, firmware design, the transport layer, the host bridge, the browser visualization layer, the command interface used for runtime configuration, and the debugging process that uncovered and resolved two significant implementation issues.
+
+\section{System Architecture}
+
+\includegraphics[width=16cm, height=8cm]{block_diagram.png} \newline
+
+The system for the proposed solution consists of the following layers: \newline
+
+\textbf{Platform board (ESP32)}: The ESP32 is responsible for generating a known test signal (impulse or sine wave) through its onboard DAC, and for sampling both the raw generated signal and the target's filtered output through its ADC. A shared digital timing/trigger line (DT\_GPIO) runs bidirectionally between the platform and the target so that both boards can align sampling and processing to a common timing reference. A UART-based intercommunication channel allows the platform to send configuration and control commands to the target, including filter selection and live coefficient updates without needing to re-flash either board.
+\newline
+
+\textbf{Target MCU:} The target receives the platform-generated signal on its ADC input, runs the selected digital filter algorithm on it, and outputs the filtered result via its own DAC back to the platform for sampling. This mirrors how a filter would behave in a real deployed system, while keeping the "device under test" cleanly separated from the instrumentation logic.
+\newline
+
+\textbf{Data transport:} Rather than sending one packet per sample, which would be inefficient and fragile over Wi-Fi, the platform batches fixed numbers of samples into a single UDP data gram, adding a lightweight batch header (batch\_id, count) for loss detection at the batch level, and a per-packet sequence number for loss detection at the sample level. A compile-time switch also allows falling back to a USB CDC transport for bench debugging without Wi-Fi.
+\newline
+
+Host bridge and browser visualizer. On the host side, a small Node.js bridge listens for incoming UDP datagrams and relays them, unmodified, to any connected browser client over WebSocket. All parsing of the binary packet format happens client-side, inside a Web Worker, which keeps the browser's main thread free for rendering. The worker buffers samples per channel, detects dropped batches, and applies edge-triggering on the filtered signal so that periodic test signals appear as a stable, non-scrolling waveform on screen, similar to how a real oscilloscope trigger works. A canvas-based dashboard then renders all six channels simultaneously, with live-adjustable sample window size, per-channel visibility toggles, and a running statistics bar showing packet rate and dropped-batch counts. \newline
+
+Together, these pieces form a closed loop: generate a known signal, filter it on real hardware, stream the result wirelessly with loss-aware framing, and visualize it live with filter type and coefficients reconfigurable at runtime via simple UART text commands, without ever re-flashing the target.
+
+
+
+\chapter{Results}
+\label{chap:results}
+\section{Visualization}
+\section{Conclusion}
+
+
 
