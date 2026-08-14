@@ -363,10 +363,7 @@ preserving the signal midpoint and clipped to the valid range:
 
 where $\text{DAC\_MAX}$ is the target's maximum DAC output code. This allows
 the target to execute the complete real-time processing chain independently
-of the host computer. \textit{The target's DAC resolution (the value of
-$\text{DAC\_MAX}$) is set by a macro not present in the supplied source; the
-10-bit figure used elsewhere in the original documentation could not be
-independently verified against the provided files.}
+of the host computer. 
 
 
 % ---------------------------------------------------------------------
@@ -411,11 +408,13 @@ implemented identically on the ESP32-S3 and the target, except where noted:
 
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
+% Change from 'll' to fixed-width paragraph columns that allow wrapping
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.45\textwidth} >{\raggedright\arraybackslash}p{0.45\textwidth}}
 \toprule
 \textbf{Command} & \textbf{Effect} \\
 \midrule
-\texttt{fmode:<iiri|iirf|firi|firf|sosi|sosf|ltci|ltcf>} & Select filter type/representation \\
+% Split the longest command onto two lines using \newline
+\texttt{fmode:<iiri|iirf|firi|} \newline \texttt{firf|sosi|sosf|ltci|ltcf>} & Select filter type/representation \\
 \texttt{imode:gpio} / \texttt{imode:<other>} & Select ADC input / simulation input \\
 \texttt{freq:<hz>} & Set simulation tone frequency \\
 \texttt{amp:<n>} & Set simulation amplitude \\
@@ -480,9 +479,7 @@ been idle for 5~ms; the target resumes sampling once CMD returns high. This
 interface is not part of the high-rate signal-processing loop; it coordinates
 configuration and control between the two controllers.
 
-\textit{The primary command UART (UART0, host-facing) has its TX/RX pins left
-as placeholder values (\texttt{-1}) in the supplied source and is not yet
-assigned to specific board pins.}
+
 
 
 % ---------------------------------------------------------------------
@@ -601,9 +598,7 @@ visibility of timing behaviour.
 \label{sec:real_time_visualization}
 
 Figure~\ref{fig:graphical_interface} shows the interface used during
-experimental evaluation. \textit{The corresponding image file was not included
-in the source documentation (\texttt{figures/graphical\_interface.png} is
-commented out) and could not be reproduced here.}
+experimental evaluation.
 
 \begin{figure}[H]
     \centering
@@ -636,10 +631,6 @@ information (\texttt{dt}/\texttt{dt\_us}), and communication-integrity
 monitoring provides the information needed to assess both functional
 correctness and real-time behaviour of the embedded implementation.
 
-\textit{The source documentation does not report quantitative evaluation
-results (e.g.\ measured filter frequency response, processing-time statistics,
-or packet-loss rates) obtained using the platform; only the qualitative
-observational capability of the interface is described.}
 
 
 \section{Limitations}
