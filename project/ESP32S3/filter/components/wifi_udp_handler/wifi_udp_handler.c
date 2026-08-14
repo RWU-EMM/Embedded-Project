@@ -31,9 +31,9 @@ esp_err_t wifi_udp_handler_init(const wifi_udp_handler_config_t *config)
 
     nvs_initialize();
 
-    // esp_start_wifi_driver(1, "ESP_AP", "12144121", "Luc Yonga", "Lucyonga@0905");
+    esp_start_wifi_driver(1, "ESP_AP", "12144121", "Luc Yonga", "Lucyonga@0905");
     // esp_start_wifi_driver(1, "ESP_AP", "12144121", "H.O.M.E", "HOME2077");
-    esp_start_wifi_driver(1, "ESP_AP", "12141214", "NoDevice", "13071307");
+    // esp_start_wifi_driver(1, "ESP_AP", "12141214", "NoDevice", "13071307");
 
     memset(&s_ctx, 0, sizeof(s_ctx));
 

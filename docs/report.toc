@@ -1,4 +1,25 @@
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Purpose of Document}{1}{section.1.1}%
-\contentsline {section}{\numberline {1.2}Scope}{1}{section.1.2}%
-\contentsline {section}{\numberline {1.3}Reference Documents}{1}{section.1.3}%
+\contentsline {section}{\numberline {1.1}Background}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Problem Statement}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Objectives}{1}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Implemented Solution}{2}{section.1.4}%
+\contentsline {chapter}{\numberline {2}System Design and Implementation}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}System Architecture}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}ESP32-S3 Platform Controller}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Execution Modes}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Test Signal Generation}{5}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Real-Time Sampling and Processing}{5}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Digital Filter Implementation}{5}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Internal Processing (ESP32-S3)}{6}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}External Target Processing (Arduino Nano 33 IoT)}{6}{subsection.2.6.2}%
+\contentsline {section}{\numberline {2.7}Target Operating States}{7}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Runtime Filter Configuration}{7}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Inter-Controller Communication}{8}{section.2.9}%
+\contentsline {section}{\numberline {2.10}DSM Telemetry Packet}{8}{section.2.10}%
+\contentsline {section}{\numberline {2.11}UDP Telemetry Transmission}{9}{section.2.11}%
+\contentsline {section}{\numberline {2.12}Host-Side Visualization}{9}{section.2.12}%
+\contentsline {chapter}{\numberline {3}Results}{10}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Real-Time Visualization Interface}{10}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Discussion}{10}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Limitations}{11}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Conclusion}{11}{section.3.4}%

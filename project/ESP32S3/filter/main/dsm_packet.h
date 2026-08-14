@@ -9,7 +9,7 @@
 
 #define ACTIVE_SEND_MODE SEND_MODE_UDP
 
-#define UDP_BATCH_SIZE 20   
+#define UDP_BATCH_SIZE 100  
 
 #define DSM_SIGNATURE (0xADU)
 

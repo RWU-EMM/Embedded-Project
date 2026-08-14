@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.19)  14 AUG 2026 13:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.11.19)  14 AUG 2026 21:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1004,34 +1004,34 @@ Package biblatex Info: ... and expl3
 Package: xparse 2025-10-09 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2025/07/10 v3.21 expl3 case changing code for biblatex
-))) (glossary.tex)
-Package translations Info: No language package found. I am going to use `english' as default language. on input line 13.
+)))
+Package translations Info: No language package found. I am going to use `english' as default language. on input line 11.
 \@quotelevel=\count513
 \@quotereset=\count514
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 13.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 11.
  (D:\Program Files\MiKTeX\tex/latex/lm\t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1070,7 +1070,7 @@ LaTeX Font Info:    ... okay on input line 13.
 (D:\Program Files\MiKTeX\tex/latex/translations/dicts\translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 13.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 11.
  (D:\Program Files\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count515
@@ -1108,7 +1108,8 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 ))
-Package hyperref Info: Link coloring OFF on input line 13.
+Package hyperref Info: Link coloring OFF on input line 11.
+ (report.out) (report.out)
 \@outlinefile=\write7
 \openout7 = `report.out'.
 
@@ -1124,13 +1125,12 @@ Package biblatex Info: Automatic encoding selection.
 \openout6 = `report.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'report.bbl' not found.
-
-No file report.bbl.
-Package biblatex Info: Reference section=0 on input line 13.
-Package biblatex Info: Reference segment=0 on input line 13.
-(title_page.tex
-<figures/rwu.jpg, id=3, 321.2pt x 321.2pt>
+Package biblatex Info: ... file 'report.bbl' found.
+ (report.bbl)
+Package biblatex Info: Reference section=0 on input line 11.
+Package biblatex Info: Reference segment=0 on input line 11.
+ (title_page.tex
+<figures/rwu.jpg, id=103, 321.2pt x 321.2pt>
 File: figures/rwu.jpg Graphic file (type jpg)
 <use figures/rwu.jpg>
 Package pdftex.def Info: figures/rwu.jpg  used on input line 13.
@@ -1139,132 +1139,164 @@ Package pdftex.def Info: figures/rwu.jpg  used on input line 13.
 
 \openout3 = `report.ist'.
 
-{C:/Users/sanga/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc} <./figures/rwu.jpg>])
-No file report.toc.
-\tf@toc=\write8
-\openout8 = `report.toc'.
-
-[2
-
-]
-No file report.lof.
-\tf@lof=\write9
-\openout9 = `report.lof'.
-
-[3
-
-]
-No file report.lot.
-\tf@lot=\write10
-\openout10 = `report.lot'.
-
-[4
-
-]
-No file report.gls.
-No file report.acr.
-File: figures/rwu.jpg Graphic file (type jpg)
-<use figures/rwu.jpg>
-Package pdftex.def Info: figures/rwu.jpg  used on input line 26.
-(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
-[5
-
-] (chapters/spec_chap1_intro.tex
-Chapter 1.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 12.
-(D:\Program Files\MiKTeX\tex/latex/lm\ot1lmr.fd
+{C:/Users/sanga/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc} <./figures/rwu.jpg>]) (report.toc
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2.
+ (D:\Program Files\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 12.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2.
  (D:\Program Files\MiKTeX\tex/latex/lm\omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 12.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 2.
  (D:\Program Files\MiKTeX\tex/latex/lm\omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 12.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 2.
  (D:\Program Files\MiKTeX\tex/latex/lm\omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 12.
+(Font)              <12> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 12.
+(Font)              <8> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 12.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 12.
+(Font)              <6> on input line 2.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
  (D:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 12.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
  (D:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 32.
- (D:\Program Files\MiKTeX\tex/latex/lm\ts1lmr.fd
-File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ))
+\tf@toc=\write8
+\openout8 = `report.toc'.
 
-LaTeX Warning: Empty bibliography on input line 35.
+ [2
 
+] (report.lof)
+\tf@lof=\write9
+\openout9 = `report.lof'.
 
+ [3
+
+] (report.lot
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 3.
+ (D:\Program Files\MiKTeX\tex/latex/lm\t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+))
+\tf@lot=\write10
+\openout10 = `report.lot'.
+
+ [4
+
+] (chapters/spec_chap1_intro.tex
+Chapter 1.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 40.
+(D:\Program Files\MiKTeX\tex/latex/lm\ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.38 \clearpage
-                [1
+l.71     \item p
+                rovides synchronized, browser-based visualization of the acq... [1
 
-{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}] (report.aux)
+{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 97.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+ [2]
+Chapter 2.
+<figures/block_diagram.png, id=178, 1366.10374pt x 875.27pt>
+File: figures/block_diagram.png Graphic file (type png)
+<use figures/block_diagram.png>
+Package pdftex.def Info: figures/block_diagram.png  used on input line 122.
+(pdftex.def)             Requested size: 452.9679pt x 290.2156pt.
+[3
+
+ <./figures/block_diagram.png>]
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 208.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+ [4]
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 284.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+ [5{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-mathit.enc}{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}]
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 370.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+ [6{D:/Program Files/MiKTeX/fonts/enc/dvips/lm/lm-mathex.enc}]
+Overfull \hbox (87.99756pt too wide) in paragraph at lines 414--433
+ [][] 
+ []
+
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 447.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+[7]
+Overfull \hbox (202.13731pt too wide) in paragraph at lines 503--515
+ [][] 
+ []
+
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 538.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+[8]
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 597.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+ [9]
+Chapter 3.
+
+Overfull \hbox (27.78151pt too wide) in paragraph at lines 603--607
+\T1/lmr/m/it/12 im-age file was not in-cluded in the source doc-u-men-ta-tion (\T1/lmtt/m/it/12 figures/graphical_interface.png
+ []
+
+[10
+
+])
+
+Package glossaries Warning: No \printglossary or \printglossaries found. 
+(Remove \makeglossaries if you don't want any glossaries.) 
+This document will not have a glossary.
+
+File: figures/rwu.jpg Graphic file (type jpg)
+<use figures/rwu.jpg>
+Package pdftex.def Info: figures/rwu.jpg  used on input line 28.
+(pdftex.def)             Requested size: 11.99791pt x 12.0pt.
+[11] (report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-10-24>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  1C18EBBC3380D6F3C6F4308E5554C156;489.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                report
-(biblatex)                and rerun LaTeX afterwards.
-
+Package rerunfilecheck Info: File `report.out' has not changed.
+(rerunfilecheck)             Checksum: E51FBBAA8F55182A847F268C8CFF5FE5;4200.
 Package logreq Info: Writing requests to 'report.run.xml'.
 \openout1 = `report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 36836 strings out of 467871
- 742050 string characters out of 5428442
- 1582343 words of memory out of 5000000
- 65311 multiletter control sequences out of 15000+600000
- 674438 words of font info for 70 fonts, out of 8000000 for 9000
+ 36052 strings out of 467871
+ 730473 string characters out of 5428442
+ 1582703 words of memory out of 5000000
+ 64457 multiletter control sequences out of 15000+600000
+ 694168 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 80i,14n,93p,2535b,1091s stack positions out of 10000i,1000n,20000p,200000b,200000s
-
-pdfTeX warning (dest): name{glo:SoC} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{glo:isa} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{glo:riscv} has been referenced but does not exist, replaced by a fixed one
-
-<D:/Program Files/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr17.pfb>
-Output written on report.pdf (6 pages, 160963 bytes).
+ 80i,15n,93p,2535b,1171s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<D:/Program Files/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmex10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmmi12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmmi8.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr17.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmr8.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmri12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><D:/Program Files/MiKTeX/fonts/type1/public/lm/lmtti10.pfb>
+Output written on report.pdf (15 pages, 393689 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 17 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 350 PDF objects out of 1000 (max. 8388607)
+ 62 named destinations out of 1000 (max. 500000)
+ 211 words of extra memory for PDF output out of 10000 (max. 10000000)
 

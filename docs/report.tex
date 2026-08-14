@@ -8,8 +8,6 @@
 % Load all packages & settings
 \input{preamble}
 
-\input{glossary}
-
 \begin{document}
 
 \input{title_page.tex}
@@ -20,22 +18,11 @@
 \tableofcontents
 \listoffigures
 \listoftables
-\clearpage
-\printglossaries
 
 \newpage
 \pagenumbering{arabic}
 
 % --- Main Chapters ---
 \input{chapters/spec_chap1_intro.tex}
-
-
-% --- References ---
-\nocite{*}
-\printbibliography
-
-% --- Appendices / Annexures ---
-\clearpage
-\appendix
 
 \end{document}

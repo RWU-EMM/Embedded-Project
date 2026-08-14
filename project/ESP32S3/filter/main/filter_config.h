@@ -43,6 +43,19 @@
 #include "esp_log.h"
 #include "esp_err.h"
 
+
+typedef enum {
+    FTS_EXE_MODE_INT = 0, /* Local execution only */
+    FTS_EXE_MODE_EXT = 1  /* Local execution AND forward to secondary UART */
+} fts_exe_mode_e;
+
+/* GPIO Pin definitions for handshake */
+#define EXT_CMD_GPIO    GPIO_NUM_4   /* Output: Default HIGH */
+#define EXT_RDY_GPIO    GPIO_NUM_5   /* Input: Default HIGH */
+
+/* Default execution mode */
+#define DEFAULT_EXE_MODE FTS_EXE_MODE_INT
+
 /*
  * Input source
  *  */
@@ -97,6 +110,10 @@ typedef struct
 
     volatile bool coeff_load_pending;
     filter_type_e coeff_load_target;
+
+    volatile bool exe_mode_pending;
+    volatile fts_exe_mode_e next_exe_mode;
+    fts_exe_mode_e active_exe_mode;
 
 } fts_config_t;
 

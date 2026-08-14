@@ -1,2 +1,5 @@
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {1.1}{\ignorespaces History / Revision – Chapter 1}}{1}{table.caption.4}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Runtime command interface. \texttt {imode}, \texttt {freq}, \texttt {amp}, \texttt {wave}, and \texttt {gcoeff} apply to the ESP32-S3 only; the target implements \texttt {fmode}, \texttt {scoeff}, \texttt {reset}, and \texttt {stop}/\texttt {start}.}}{7}{table.caption.5}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces DSM packet layout. Total size is 20~B in UDP mode (with \texttt {seq}) and 18~B in USB mode (without), verified by a compile-time size assertion.}}{8}{table.caption.6}%
+\addvspace {10\p@ }
