@@ -86,9 +86,20 @@ Processed and acquired data are transmitted wirelessly via UDP to a Node.js
 host bridge and forwarded to a browser-based interface over WebSocket. This
 establishes a continuous development loop in which the signal is generated,
 processed on real hardware, transmitted, and visualized without manual
-intervention. The system architecture, implementation, and evaluation are
-described in Chapter~\ref{chap:methodology} and Chapter~\ref{chap:results}.
+intervention.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[
+        height=0.65\textheight,
+        angle=90
+    ]{figures/hw_setup.jpeg}
+    \caption{Hardware setup of the developed real-time digital filter evaluation platform.}
+    \label{fig:hardware_setup}
+\end{figure}
+
+The system architecture, implementation, and evaluation are described in
+Chapter~\ref{chap:methodology} and Chapter~\ref{chap:results}.
 
 % =====================================================================
 % CHAPTER 2: SYSTEM DESIGN AND IMPLEMENTATION
@@ -103,7 +114,6 @@ inter-controller communication link, wireless telemetry, and a host-side
 visualization system. The architecture supports both local execution of the
 filter on the ESP32-S3 and external execution on the target microcontroller,
 allowing the same platform to evaluate either implementation.
-
 
 % ---------------------------------------------------------------------
 % 2.1 System Architecture
@@ -121,7 +131,7 @@ overall architecture is shown in Figure~\ref{fig:block_diagram}.
     \centering
     \includegraphics[width=\textwidth]{figures/block_diagram.png}
     \caption{Overall architecture of the real-time digital filter
-    evaluation platform.}
+        evaluation platform.}
     \label{fig:block_diagram}
 \end{figure}
 
@@ -133,7 +143,6 @@ runtime. The ESP32-S3 encapsulates processed and acquired data in DSM packets
 (Section~\ref{sec:dsm_telemetry}) and transmits them over UDP to the host
 application, which provides real-time visualization
 (Section~\ref{sec:host_visualization}).
-
 
 % ---------------------------------------------------------------------
 % 2.2 ESP32-S3 Platform Controller
@@ -162,7 +171,6 @@ application task performs signal processing after receiving the timer
 notification. This keeps interrupt execution short and decouples the timing
 event from the processing workload.
 
-
 % ---------------------------------------------------------------------
 % 2.3 Execution Modes
 % ---------------------------------------------------------------------
@@ -189,7 +197,6 @@ internal ESP32-S3 processing timer, and reselecting internal execution restarts
 it. The same platform infrastructure therefore supports both local and
 target-side filter evaluation.
 
-
 % ---------------------------------------------------------------------
 % 2.4 Test Signal Generation
 % ---------------------------------------------------------------------
@@ -202,8 +209,8 @@ deterministic test inputs, operating at the configured sampling frequency and
 supporting sinusoidal and impulse waveform modes. The default configuration
 uses a 5~kHz sampling frequency and a 100~Hz simulation frequency, with the
 default waveform set to impulse mode at amplitude 100 (both the ESP32-S3 and
-target firmware boot with this default; the frequency parameter applies to
-sine mode). Simulation input, frequency, amplitude, and waveform type are
+target firmware boot with this default; the frequency parameter applies to sine
+mode). Simulation input, frequency, amplitude, and waveform type are
 runtime-configurable without firmware modification.
 
 Analog acquisition uses \texttt{ADC\_UNIT\_1} at 12~dB attenuation and the
@@ -212,7 +219,6 @@ modes; channel 5 is used only in external mode, wired to the target's DAC
 output for direct analog readback of the filtered result
 (Section~\ref{sec:external_target_processing}).
 
-
 % ---------------------------------------------------------------------
 % 2.5 Real-Time Sampling and Processing
 % ---------------------------------------------------------------------
@@ -220,8 +226,8 @@ output for direct analog readback of the filtered result
 \section{Real-Time Sampling and Processing}
 \label{sec:realtime_processing}
 
-The processing framework operates at a nominal sampling frequency
-$f_s = 5$~kHz, giving a nominal sampling period
+The processing framework operates at a nominal sampling frequency $f_s =
+    5$~kHz, giving a nominal sampling period
 
 \begin{equation}
     T_s = \frac{1}{f_s} = \frac{1}{5000} = 200~\mu\mathrm{s}.
@@ -237,22 +243,21 @@ available — so that acquisition and filtering execute outside the ISR. For
 internal execution, the resulting sequence is:
 
 \begin{equation}
-\boxed{
-\text{Timer Event}
-\rightarrow
-\text{Input Acquisition}
-\rightarrow
-\text{Digital Filter}
-\rightarrow
-\text{Telemetry Generation}
-}
-\label{eq:internal_sequence}
+    \boxed{
+        \text{Timer Event}
+        \rightarrow
+        \text{Input Acquisition}
+        \rightarrow
+        \text{Digital Filter}
+        \rightarrow
+        \text{Telemetry Generation}
+    }
+    \label{eq:internal_sequence}
 \end{equation}
 
 The measured execution time of the processing operation is recorded in the
 telemetry packet as the \texttt{dt} field, providing visibility of
 processing-time behaviour through the host interface.
-
 
 % ---------------------------------------------------------------------
 % 2.6 Digital Filter Implementation
@@ -308,19 +313,18 @@ the centring offset:
 
 Both signed and DAC-domain representations, together with the processing-time
 measurement, are stored in the telemetry structure. This path provides the
-local reference against which the external target implementation is
-evaluated.
+local reference against which the external target implementation is evaluated.
 
 \subsection{External Target Processing (Arduino Nano 33 IoT)}
 \label{sec:external_target_processing}
 
-In external mode, the ESP32-S3 does not receive the filtered sample
-digitally. It waits for the RDY line to fall, records the timestamp
-$t_\text{low}$, and samples two ADC channels: channel 4, on the shared input
-line ($x[n]$), and channel 5, wired to the target's analog DAC output, which
-yields the filtered result $y[n]$ directly as an analog readback. The
-ESP32-S3 then waits for RDY to return high, records $t_\text{high}$, and
-computes the target's per-sample processing latency:
+In external mode, the ESP32-S3 does not receive the filtered sample digitally.
+It waits for the RDY line to fall, records the timestamp $t_\text{low}$, and
+samples two ADC channels: channel 4, on the shared input line ($x[n]$), and
+channel 5, wired to the target's analog DAC output, which yields the filtered
+result $y[n]$ directly as an analog readback. The ESP32-S3 then waits for RDY
+to return high, records $t_\text{high}$, and computes the target's per-sample
+processing latency:
 
 \begin{equation}
     dt = t_\text{high} - t_\text{low}.
@@ -332,39 +336,44 @@ into the telemetry packet.
 
 On the target itself, the Arduino Nano 33 IoT firmware implements a
 timer-driven acquisition and processing architecture, independent of the
-ESP32-S3's sampling instant: a hardware timer generates the sampling event,
-and the main application loop executes the processing chain
+ESP32-S3's sampling instant: a hardware timer generates the sampling event, and
+the main application loop executes the processing chain
 
 \begin{equation}
-\boxed{
-\text{ADC}
-\rightarrow
-\text{Signal Centering}
-\rightarrow
-\text{Digital Filter}
-\rightarrow
-\text{DAC Scaling}
-\rightarrow
-\text{DAC}
-}
-\label{eq:external_sequence}
+    \boxed{
+        \text{ADC}
+        \rightarrow
+        \text{Signal Centering}
+        \rightarrow
+        \text{Digital Filter}
+        \rightarrow
+        \text{DAC Scaling}
+        \rightarrow
+        \text{DAC}
+    }
+    \label{eq:external_sequence}
 \end{equation}
 
-After filtering (Eq.~\ref{eq:filter_processing}), the result is converted
-from the signed 12-bit domain to the target's DAC output range, scaled while
+After filtering (Eq.~\ref{eq:filter_processing}), the result is converted from
+the signed 12-bit domain to the target's DAC output range, scaled while
 preserving the signal midpoint and clipped to the valid range:
 
 \begin{equation}
     \text{dac\_out} = \mathrm{clip}\!\left(
-        \left\lfloor \frac{y[n]\cdot \text{DAC\_MAX}}{4095}\right\rfloor
-        + \frac{\text{DAC\_MAX}}{2},\; 0,\; \text{DAC\_MAX}\right),
+    \left\lfloor \frac{y[n]\cdot \text{DAC\_MAX}}{4095}\right\rfloor
+    + \frac{\text{DAC\_MAX}}{2},\; 0,\; \text{DAC\_MAX}\right),
     \label{eq:external_dac_scaling}
 \end{equation}
 
 where $\text{DAC\_MAX}$ is the target's maximum DAC output code. This allows
+<<<<<<< Updated upstream
 the target to execute the complete real-time processing chain independently
 of the host computer. 
 
+=======
+the target to execute the complete real-time processing chain independently of
+the host computer.
+>>>>>>> Stashed changes
 
 % ---------------------------------------------------------------------
 % 2.7 Target Operating States
@@ -377,10 +386,10 @@ The target microcontroller uses command and ready signals to coordinate two
 mutually exclusive states:
 
 \begin{equation}
-\boxed{\text{Sampling State}}
-\qquad
-\boxed{\text{Configuration State}}
-\label{eq:target_states}
+    \boxed{\text{Sampling State}}
+    \qquad
+    \boxed{\text{Configuration State}}
+    \label{eq:target_states}
 \end{equation}
 
 In the sampling state, the target executes the timer-driven acquisition,
@@ -389,9 +398,9 @@ the ESP32-S3, the target disables the sampling timer, enters the configuration
 state, and signals its state via the ready line. After the command is
 processed, the target re-enables the sampling timer and resumes real-time
 processing. This prevents configuration operations from executing concurrently
-with the real-time filtering sequence. The exact handshake protocol coordinating
-this transition is given in Section~\ref{sec:inter_controller_communication}.
-
+with the real-time filtering sequence. The exact handshake protocol
+coordinating this transition is given in
+Section~\ref{sec:inter_controller_communication}.
 
 % ---------------------------------------------------------------------
 % 2.8 Runtime Filter Configuration
@@ -407,6 +416,7 @@ execution mode, and other processing parameters. The full command set is
 implemented identically on the ESP32-S3 and the target, except where noted:
 
 \begin{table}[H]
+<<<<<<< Updated upstream
 \centering
 % Change from 'll' to fixed-width paragraph columns that allow wrapping
 \begin{tabular}{>{\raggedright\arraybackslash}p{0.45\textwidth} >{\raggedright\arraybackslash}p{0.45\textwidth}}
@@ -431,6 +441,55 @@ implemented identically on the ESP32-S3 and the target, except where noted:
 \texttt{wave}, and \texttt{gcoeff} apply to the ESP32-S3 only; the target
 implements \texttt{fmode}, \texttt{scoeff}, \texttt{reset}, and \texttt{stop}/\texttt{start}.}
 \label{tab:runtime_commands}
+=======
+    \centering
+    \caption{Runtime command interface of the ESP32-S3 platform.}
+    \label{tab:runtime_commands}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabularx}{\textwidth}{
+        >{\ttfamily\raggedright\arraybackslash}p{0.38\textwidth}
+        >{\raggedright\arraybackslash}X
+        }
+        \toprule
+        \textnormal{\textbf{Command}}                   &
+        \textnormal{\textbf{Effect}}                                                                                           \\
+        \midrule
+
+        fmode:<iiri|iirf|firi|firf|sosi|sosf|ltci|ltcf> & Select the digital filter
+        type and numerical representation.                                                                                     \\
+
+        imode:gpio / imode:<other>                      & Select the input source, such as the ADC input or
+        the configured simulation input.                                                                                       \\
+
+        freq:<hz>                                       & Set the simulation signal frequency in Hz.                           \\
+
+        amp:<n>                                         & Set the simulation signal amplitude.                                 \\
+
+        wave:sin / wave:imp                             & Select the simulation waveform as sinusoidal or impulse.
+        \\
+
+        scoeff:<type>                                   & Stop the sampling timer and begin runtime coefficient upload
+        for the selected filter type.                                                                                          \\
+
+        gcoeff                                          & Print the currently active filter coefficients to the ESP32-S3 log.  \\
+
+        exemode:int / exemode:ext                       & Request switching between internal ESP32-S3
+        execution and external target execution.                                                                               \\
+
+        stop / start                                    & Stop or restart the sampling timer.                                  \\
+
+        reset                                           & Restore the default filter, input source, simulation parameters, and
+        execution configuration.                                                                                               \\
+
+        ar                                              & Restart the ESP32-S3.                                                \\
+
+        \bottomrule
+    \end{tabularx}
+    \caption{Runtime command interface. \texttt{imode}, \texttt{freq}, \texttt{amp},
+        \texttt{wave}, and \texttt{gcoeff} apply to the ESP32-S3 only; the target
+        implements \texttt{fmode}, \texttt{scoeff}, \texttt{reset}, and \texttt{stop}/\texttt{start}.}
+    \label{tab:runtime_commands}
+>>>>>>> Stashed changes
 \end{table}
 
 On receipt of a filter-selection command, the corresponding configuration is
@@ -438,12 +497,11 @@ applied and the filter state is reinitialized. Coefficient upload
 (\texttt{scoeff:<type>}) additionally stops the sampling timer on both
 controllers and transfers the coefficient set as newline-terminated
 \texttt{w~<key>~<values...>} lines (e.g.\ \texttt{w~iirf.b~<21~floats>},
-\texttt{w~iirf.Nb~<n>}), parsed identically on both firmwares. Once a
-complete, validated coefficient set is received, it is committed to the
-selected filter structure and the timer is restarted. This allows different
-coefficient configurations to be evaluated on the same hardware without a new
-firmware build.
-
+\texttt{w~iirf.Nb~<n>}), parsed identically on both firmwares. Once a complete,
+validated coefficient set is received, it is committed to the selected filter
+structure and the timer is restarted. This allows different coefficient
+configurations to be evaluated on the same hardware without a new firmware
+build.
 
 % ---------------------------------------------------------------------
 % 2.9 Inter-Controller Communication
@@ -452,25 +510,25 @@ firmware build.
 \section{Inter-Controller Communication}
 \label{sec:inter_controller_communication}
 
-The ESP32-S3 drives CMD (GPIO4, active-low, default high) and reads RDY
-(GPIO5, pull-up, default high) from the target, over a secondary link
-(UART1, 115200 8N1). To issue a command, the ESP32-S3: waits for RDY low,
-drives CMD low, delays 5~ms, transmits the newline-terminated command line
-over UART1, then waits for RDY high before driving CMD back high:
+The ESP32-S3 drives CMD (GPIO4, active-low, default high) and reads RDY (GPIO5,
+pull-up, default high) from the target, over a secondary link (UART1, 115200
+8N1). To issue a command, the ESP32-S3: waits for RDY low, drives CMD low,
+delays 5~ms, transmits the newline-terminated command line over UART1, then
+waits for RDY high before driving CMD back high:
 
 \begin{equation}
-\boxed{
-\text{RDY Low}
-\rightarrow
-\text{CMD Low}
-\rightarrow
-\text{Command Transfer}
-\rightarrow
-\text{RDY High}
-\rightarrow
-\text{CMD High}
-}
-\label{eq:command_sequence}
+    \boxed{
+        \text{RDY Low}
+        \rightarrow
+        \text{CMD Low}
+        \rightarrow
+        \text{Command Transfer}
+        \rightarrow
+        \text{RDY High}
+        \rightarrow
+        \text{CMD High}
+    }
+    \label{eq:command_sequence}
 \end{equation}
 
 On the target, a falling CMD edge suspends the sampling timer and pulls RDY
@@ -479,9 +537,12 @@ been idle for 5~ms; the target resumes sampling once CMD returns high. This
 interface is not part of the high-rate signal-processing loop; it coordinates
 configuration and control between the two controllers.
 
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
 % ---------------------------------------------------------------------
 % 2.10 DSM Telemetry Packet
 % ---------------------------------------------------------------------
@@ -492,34 +553,51 @@ configuration and control between the two controllers.
 After each valid processing cycle, the ESP32-S3 builds a DSM telemetry packet
 containing the input signal, generated signal, filter input, filter output,
 DAC-domain values, timing information (\texttt{dt},
-Section~\ref{sec:realtime_processing}), a sequence identifier, and an
-integrity field:
+Section~\ref{sec:realtime_processing}), a sequence identifier, and an integrity
+field:
 
 \begin{table}[H]
-\centering
-\begin{tabular}{lll}
-\toprule
-\textbf{Field} & \textbf{Type} & \textbf{Notes} \\
-\midrule
-sig & uint8 & Fixed signature, 0xAD \\
-n & uint8 & Packet size (bits 0--5) + rolling 2-bit sequence counter (bits 6--7) \\
-seq & uint16 & UDP mode only \\
-adc\_in, fgen\_out, filt\_x, filt\_y, dac0, dac1, dt & int16 $\times$7 & Signal/timing fields \\
-crc16 & uint16 & Integrity checksum \\
-\bottomrule
-\end{tabular}
-\caption{DSM packet layout. Total size is 20~B in UDP mode (with \texttt{seq})
-and 18~B in USB mode (without), verified by a compile-time size assertion.}
-\label{tab:dsm_layout}
+    \centering
+    \small
+    \begin{tabularx}{\textwidth}{@{}l l X@{}}
+        \toprule
+        \textbf{Field}                                              & \textbf{Type} & \textbf{Notes} \\
+        \midrule
+        \texttt{sig}                                                &
+        \texttt{uint8}                                              &
+        Fixed signature, \texttt{0xAD}                                                               \\
+
+        \texttt{n}                                                  &
+        \texttt{uint8}                                              &
+        Packet size (bits 0--5) and rolling 2-bit sequence counter
+        (bits 6--7)                                                                                  \\
+
+        \texttt{seq}                                                &
+        \texttt{uint16}                                             &
+        UDP mode only                                                                                \\
+
+        \texttt{adc\_in}, \texttt{fgen\_out}, \texttt{filt\_x},
+        \texttt{filt\_y}, \texttt{dac0}, \texttt{dac1}, \texttt{dt} &
+        \texttt{int16} $\times$ 7                                   &
+        Signal and timing fields                                                                     \\
+
+        \texttt{crc16}                                              &
+        \texttt{uint16}                                             &
+        Integrity checksum                                                                           \\
+        \bottomrule
+    \end{tabularx}
+    \caption{DSM packet layout. The total packet size is 20~B in UDP mode
+        (with \texttt{seq}) and 18~B in USB mode (without \texttt{seq}), as
+        verified by a compile-time size assertion.}
+    \label{tab:dsm_layout}
 \end{table}
 
 The sequence identifier allows packet tracking at the receiver. Packet
 integrity is provided by a 16-bit checksum computed as the bitwise XOR of all
 16-bit words in the packet — despite the field name \texttt{crc16}, the
 algorithm is an XOR checksum rather than a cyclic redundancy check. The DSM
-packet is the common data representation between the embedded platform and
-the host-side visualization system.
-
+packet is the common data representation between the embedded platform and the
+host-side visualization system.
 
 % ---------------------------------------------------------------------
 % 2.11 UDP Telemetry Transmission
@@ -528,31 +606,30 @@ the host-side visualization system.
 \section{UDP Telemetry Transmission}
 \label{sec:udp_telemetry}
 
-Rather than transmitting each DSM packet as an individual UDP datagram,
-packets are accumulated into batches of \texttt{UDP\_BATCH\_SIZE} = 100,
-prefixed by a 6-byte header (4-byte batch ID + 2-byte packet count), a size
-verified by a compile-time assertion:
+Rather than transmitting each DSM packet as an individual UDP datagram, packets
+are accumulated into batches of \texttt{UDP\_BATCH\_SIZE} = 100, prefixed by a
+6-byte header (4-byte batch ID + 2-byte packet count), a size verified by a
+compile-time assertion:
 
 \begin{equation}
-\boxed{
-\text{Sampling}
-\rightarrow
-\text{DSM Packet}
-\rightarrow
-\text{Packet Batch}
-\rightarrow
-\text{UDP}
-\rightarrow
-\text{Host}
-}
-\label{eq:batch_sequence}
+    \boxed{
+        \text{Sampling}
+        \rightarrow
+        \text{DSM Packet}
+        \rightarrow
+        \text{Packet Batch}
+        \rightarrow
+        \text{UDP}
+        \rightarrow
+        \text{Host}
+    }
+    \label{eq:batch_sequence}
 \end{equation}
 
 Batching reduces per-datagram transmission overhead while retaining individual
 sample information within each DSM packet. The sequence number and batch
 identifier together let the host track the received telemetry stream and detect
 dropped batches (Section~\ref{sec:real_time_visualization}).
-
 
 % ---------------------------------------------------------------------
 % 2.12 Host-Side Visualization
@@ -565,18 +642,18 @@ A Node.js-based host bridge receives the binary DSM telemetry over UDP and
 forwards the decoded data to a browser-based interface over WebSocket:
 
 \begin{equation}
-\boxed{
-\text{ESP32-S3}
-\rightarrow
-\text{UDP}
-\rightarrow
-\text{Node.js Bridge}
-\rightarrow
-\text{WebSocket}
-\rightarrow
-\text{Browser}
-}
-\label{eq:host_path}
+    \boxed{
+        \text{ESP32-S3}
+        \rightarrow
+        \text{UDP}
+        \rightarrow
+        \text{Node.js Bridge}
+        \rightarrow
+        \text{WebSocket}
+        \rightarrow
+        \text{Browser}
+    }
+    \label{eq:host_path}
 \end{equation}
 
 The browser displays discrete samples using a staircase representation rather
@@ -587,76 +664,403 @@ the interface computes the minimum, maximum, average, and peak-to-peak range,
 and separately displays the processing-time signal \texttt{dt\_us} for direct
 visibility of timing behaviour.
 
+% =====================================================================
+% CHAPTER 3: RESULTS
+% =====================================================================
 
-% =====================================================================
-%   CHAPTER 3: RESULTS
-% =====================================================================
 \chapter{Results}
 \label{chap:results}
+
+% ---------------------------------------------------------------------
+% 3.1 Filter Design Verification
+% ---------------------------------------------------------------------
+
+\section{Filter Design Verification}
+\label{sec:filter_design_verification}
+
+The designed ninth-order Bessel low-pass filter was first verified in MATLAB
+before implementation on the embedded platforms. The filter was designed for a
+nominal cutoff frequency of $f_c=555$~Hz and a sampling frequency of
+$f_s=5$~kHz.
+
+The simulated magnitude response was evaluated to verify the required cutoff
+frequency and overall frequency-domain behaviour. The measured $-3$~dB cutoff
+frequency was
+
+\begin{equation}
+    f_g = 554.75~\mathrm{Hz}.
+\end{equation}
+
+The deviation from the specified cutoff frequency is therefore
+
+\begin{equation}
+    \Delta f =
+    |555-554.75|
+    = 0.25~\mathrm{Hz},
+\end{equation}
+
+corresponding to a relative deviation of
+
+\begin{equation}
+    \frac{0.25}{555}\times100
+    = 0.045\%.
+\end{equation}
+
+The measured cutoff frequency is therefore well within the specified $\pm1\%$
+tolerance.
+
+The impulse-response analysis was additionally used to determine suitable
+truncation limits for the finite-word-length FIR implementations. The resulting
+coefficient decay was used to select the FIR lengths employed during the
+real-time evaluation.
+
+% ---------------------------------------------------------------------
+% 3.2 Real-Time Visualization Interface
+% ---------------------------------------------------------------------
 
 \section{Real-Time Visualization Interface}
 \label{sec:real_time_visualization}
 
+<<<<<<< Updated upstream
 Figure~\ref{fig:graphical_interface} shows the interface used during
 experimental evaluation.
+=======
+The implemented graphical interface provides real-time observation of the
+signals generated and processed by the embedded platforms. DSM telemetry is
+received by the host communication layer and displayed together with numerical
+signal statistics.
+
+The waveform is rendered using a staircase representation rather than linear
+interpolation between consecutive samples. This preserves the discrete-time
+nature of the measured signals and makes sample-to-sample variations,
+quantization effects, timing jitter, and possible limit-cycle oscillations
+easier to identify.
+
+The interface provides selectable channels for the input signal, generated
+signal, filter input, filter output, DAC signals, and the measured
+processing-time quantity $\texttt{dt\_us}$.
+
+For each displayed signal, the statistical table provides the minimum, maximum,
+arithmetic mean, and signal range:
+
+\begin{equation}
+    \Delta x = x_{\max}-x_{\min}.
+\end{equation}
+
+The processing-time channel $\texttt{dt\_us}$ is included in the same analysis
+to provide direct visibility of the execution-time behaviour during real-time
+operation.
+>>>>>>> Stashed changes
 
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=\textwidth]{figures/graphical_interface.png}
-    \caption{Final real-time graphical interface of the digital filter
-    evaluation platform.}
+    \includegraphics[width=\textwidth]{figures/firi.png}
+    \caption{Real-time graphical interface for signal visualization and
+        statistical analysis.}
     \label{fig:graphical_interface}
 \end{figure}
 
-The interface displays the acquired signal channels — generated input, acquired
-signals, filter-related signals, DAC outputs, and the \texttt{dt\_us} timing
-signal — together with the numerical statistics and communication status
-indicators described in Section~\ref{sec:host_visualization} and
-Section~\ref{sec:udp_telemetry}. During evaluation, the interface was used to
-identify changes in signal amplitude, steady-state behaviour, timing variation,
-and small oscillations directly from the acquired data. The communication
-status indicators (received packet count, dropped-batch count, reception rate)
-were used to verify the integrity of the real-time data stream during testing.
+The visualization interface therefore provides both qualitative and
+quantitative observation of the filter response and its real-time execution
+behaviour.
 
+% ---------------------------------------------------------------------
+% 3.3 Real-Time Filter Evaluation
+% ---------------------------------------------------------------------
+
+\section{Real-Time Filter Evaluation}
+\label{sec:realtime_filter_evaluation}
+
+The designed ninth-order Bessel low-pass filter was evaluated under real-time
+conditions on both the ESP32-S3 platform and the Arduino Nano 33 IoT target
+platform. The purpose of the hardware evaluation was to verify the functional
+behaviour of the different filter realizations and to investigate
+implementation-specific effects that may not be visible in the MATLAB
+simulation.
+
+The evaluated filter structures comprise floating-point and integer variants of
+Direct Form~I IIR, SOS, LTC, and FIR implementations. The same filter
+specification and test methodology were used for the different realizations.
+
+The ESP32-S3 provides the reference real-time implementation for the platform,
+while the Arduino Nano 33 IoT provides an independent target environment for
+evaluating the filter implementation on a separate microcontroller.
+
+A representative experiment using an impulse input is shown for the
+floating-point Direct Form~I IIR implementation in
+Figure~\ref{fig:iir_float_impulse}. The resulting response is consistent with
+the expected transient behaviour of the designed low-pass filter.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/filter.png}
+    \caption{Real-time impulse response of the ninth-order
+        floating-point Direct Form~I IIR Bessel filter.}
+    \label{fig:iir_float_impulse}
+\end{figure}
+
+The input impulse reaches approximately 100, while the filtered output reaches
+a maximum of approximately 26 and subsequently decays over several samples. The
+staircase representation makes the discrete samples of the transient response
+clearly visible.
+
+A zoomed view is shown in Figure~\ref{fig:iir_float_impulse_zoom}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/zommed.png}
+    \caption{Zoomed view of the discrete-time impulse response of the
+        floating-point Direct Form~I IIR implementation.}
+    \label{fig:iir_float_impulse_zoom}
+\end{figure}
+
+The corresponding numerical signal statistics are shown in
+Figure~\ref{fig:iir_float_statistics}. The measured filtered output has a
+maximum of approximately 26 compared with approximately 100 for the input
+impulse.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figures/table.png}
+    \caption{Measured signal statistics during the floating-point IIR
+        impulse-response test.}
+    \label{fig:iir_float_statistics}
+\end{figure}
+
+The same evaluation procedure was subsequently applied to the remaining filter
+realizations on the two embedded platforms. The results confirmed the expected
+filtering behaviour and demonstrated that the different structures could be
+executed under real-time conditions.
+
+% ---------------------------------------------------------------------
+% 3.4 Limit-Cycle Behaviour
+% ---------------------------------------------------------------------
+
+\section{Limit-Cycle Behaviour}
+\label{sec:limit_cycle_behaviour}
+
+Particular attention was given to finite-word-length effects in the integer
+implementations. The Direct Form~I IIR integer realization exhibited persistent
+limit-cycle oscillations for specific input amplitudes, with representative
+cases observed around amplitudes of 200 and 850.
+
+This behaviour results from quantization effects within the recursive feedback
+structure. Although the corresponding floating-point filter is stable,
+finite-word-length arithmetic can produce a residual quantization error that is
+sustained by the feedback path.
+
+In contrast, the tested SOS, LTC, and FIR integer implementations showed decay
+towards zero after the excitation was removed for input amplitudes up to 2000.
+Under the tested conditions, no persistent limit-cycle behaviour was observed
+for these structures.
+
+The real-time experiments therefore demonstrated that the filter structure and
+numerical representation have a significant influence on the practical
+behaviour of a digital filter. This effect would not be fully apparent from the
+floating-point pole-zero analysis alone.
+
+% ---------------------------------------------------------------------
+% 3.5 Execution Time and CPU Load
+% ---------------------------------------------------------------------
+
+\section{Execution Time and CPU Load}
+\label{sec:execution_time}
+
+Execution-time behaviour was evaluated primarily on the ESP32-S3 platform. The
+ninth-order filter operates with a nominal sampling period of
+
+\begin{equation}
+    T_s = \frac{1}{5000}
+    = 200~\mu\mathrm{s}.
+\end{equation}
+
+The measured execution times and corresponding CPU-load estimates for the
+supported filter realizations are summarized in
+Table~\ref{tab:esp32_execution}.
+
+\begin{table}[H]
+    \centering
+    \caption{Execution time and CPU load of the supported filter
+        realizations on the ESP32-S3 for $N=9$ and
+        $T_s=200~\mu\mathrm{s}$.}
+    \label{tab:esp32_execution}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Realization}             &
+        \textbf{Execution time ($\mu$s)} &
+        \textbf{CPU load (\%)}                        \\
+        \midrule
+        IIR float (Direct Form I)        & 6.5 & 3.25 \\
+        IIR int (Direct Form I)          & 5.5 & 2.75 \\
+        SOS float                        & 4.5 & 2.25 \\
+        SOS int                          & 5.0 & 2.50 \\
+        LTC float                        & 5.0 & 2.50 \\
+        LTC int                          & 5.0 & 2.50 \\
+        FIR float ($M=23$)               & 5.0 & 2.50 \\
+        FIR int ($M=23$)                 & 5.0 & 2.50 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+All evaluated realizations require substantially less than the available
+$200~\mu$s sampling period on the ESP32-S3. The measured execution times
+therefore provide sufficient computational margin for real-time operation at
+the selected sampling frequency.
+
+The processing-time values observed through the real-time visualization are
+consistent with this result. The $\texttt{dt\_us}$ channel provides direct
+visibility of the actual processing-time variation during operation.
+
+% ---------------------------------------------------------------------
+% 3.6 Microcontroller Comparison
+% ---------------------------------------------------------------------
+
+\section{Microcontroller Comparison}
+\label{sec:microcontroller_comparison}
+
+The real-time filter evaluation was performed on the ESP32-S3 and Arduino Nano
+33 IoT. In addition to these two platforms, the Arduino Due and Teensy 4.1 were
+considered as reference microcontroller platforms for comparison of
+computational requirements.
+
+The Arduino Nano 33 IoT was used as an external target platform for functional
+real-time filter evaluation. The present evaluation does not use the Arduino
+Due execution-time values as measurements of the Nano 33 IoT. Instead, the Due
+and Teensy values provide a reference for understanding how the computational
+requirements of the filter compare with other commonly used microcontroller
+platforms.
+
+For the ninth-order filter, the reference results for the Arduino Due show that
+the absence of a hardware floating-point unit has a significant effect on
+floating-point execution. The floating-point Direct Form~I IIR implementation
+requires approximately $131~\mu$s, corresponding to approximately $66\%$ CPU
+load at a $200~\mu$s sampling period. The integer SOS implementation requires
+approximately $71~\mu$s, corresponding to approximately $36\%$ CPU load.
+
+For comparison, the ESP32-S3 executes the same ninth-order realizations
+substantially faster. The floating-point Direct Form~I IIR implementation
+requires approximately $6.5~\mu$s, corresponding to $3.25\%$ CPU load, while
+the integer SOS implementation requires approximately $5~\mu$s, corresponding
+to $2.5\%$ CPU load.
+
+\begin{table}[H]
+    \centering
+    \caption{Reference execution performance for selected ninth-order
+        filter realizations on different microcontroller platforms.}
+    \label{tab:mcu_comparison}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Platform}   &
+        \textbf{IIR(float)} &
+        \textbf{SOS(int)}                                            \\
+        \midrule
+        Arduino Due         & 131~$\mu$s (66\%)   & 71~$\mu$s (36\%) \\
+        Teensy 4.1          & 25~$\mu$s (13\%)    & 25~$\mu$s (13\%) \\
+        ESP32-S3            & 6.5~$\mu$s (3.25\%) & 5~$\mu$s (2.5\%) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The Arduino Due and Teensy 4.1 values in Table~\ref{tab:mcu_comparison} are
+reference results from the accompanying microcontroller evaluation and should
+therefore be interpreted as comparative performance data rather than
+measurements of the Arduino Nano 33 IoT used as the external target in this
+project.
+
+% ---------------------------------------------------------------------
+% 3.7 Real-Time Realization Comparison
+% ---------------------------------------------------------------------
+
+\section{Comparison of Real-Time Realizations}
+\label{sec:realization_comparison}
+
+The experimental results demonstrate two important aspects of real-time
+digital-filter implementation: computational efficiency and numerical
+robustness.
+
+For floating-point arithmetic, the Direct Form~I IIR realization provides a
+stable and computationally efficient implementation on the ESP32-S3. The
+measured execution time of approximately $6.5~\mu$s represents only $3.25\%$ of
+the available $200~\mu$s sampling period.
+
+For integer arithmetic, the Direct Form~I IIR realization provides a slightly
+lower execution time but exhibits quantization-induced limit-cycle behaviour
+for specific input amplitudes. The SOS realization avoids this behaviour under
+the tested conditions while maintaining a low execution time of approximately
+$5~\mu$s on the ESP32-S3.
+
+The results therefore demonstrate that computational speed alone is not
+sufficient for selecting a filter realization. Numerical robustness and the
+arithmetic representation must also be considered.
+
+% ---------------------------------------------------------------------
+% 3.9 Discussion
+% ---------------------------------------------------------------------
 
 \section{Discussion}
 \label{sec:overall_result}
 
-The platform combines test-signal generation, on-target processing, wireless
-data transport, and browser-based visualization within a single evaluation
-workflow, allowing the behaviour of a filter implementation to be observed
-directly on target hardware rather than inferred from offline simulation alone.
-The combination of waveform visualization, numerical signal statistics, timing
-information (\texttt{dt}/\texttt{dt\_us}), and communication-integrity
-monitoring provides the information needed to assess both functional
-correctness and real-time behaviour of the embedded implementation.
+The experimental results demonstrate that the designed ninth-order Bessel
+low-pass filter satisfies its frequency-domain specification and can be
+executed under real-time conditions on the developed embedded platforms.
 
+<<<<<<< Updated upstream
+=======
+The simulated cutoff frequency of $554.75$~Hz differs from the target frequency
+of $555$~Hz by only $0.045\%$, confirming the accuracy of the filter design.
+The pole analysis additionally confirms the stability of the floating-point
+filter.
+>>>>>>> Stashed changes
 
+The real-time experiments on the ESP32-S3 and Arduino Nano 33 IoT complement
+the MATLAB analysis by exposing implementation-specific effects. In particular,
+the Direct Form~I integer realization exhibited limit-cycle oscillations for
+selected input amplitudes, despite the stable floating-point pole locations.
+The SOS, LTC, and FIR integer implementations showed improved behaviour under
+the tested conditions.
 
-\section{Limitations}
-\label{sec:limitations}
+The real-time visualization was particularly useful for identifying these
+effects because the staircase representation preserves the discrete-time
+samples and makes residual oscillations directly visible. The statistical table
+and $\texttt{dt\_us}$ measurement provide additional quantitative information
+about the signal and processing behaviour.
 
-The target's DAC resolution constant ($\text{DAC\_MAX}$,
-Eq.~\ref{eq:external_dac_scaling}) is defined outside the supplied source
-files and remains unverified against the "10-bit DAC" figure used elsewhere
-in the original documentation. The primary command UART's pin assignment is
-left as a placeholder in the supplied source (Section~\ref{sec:inter_controller_communication}).
-No quantitative performance data (frequency response accuracy, measured
-latency/jitter distribution, sustained UDP throughput or loss rate) is
-available from the source material to characterize the platform's real-time
-behaviour numerically.
+The comparison with the Arduino Due and Teensy 4.1 further shows that the
+choice of microcontroller hardware has a significant influence on the
+computational feasibility of a given filter realization. The ESP32-S3 provides
+substantial computational margin for the tested ninth-order filter, while the
+reference results for the Arduino Due show that floating-point processing can
+become a significant constraint when no hardware FPU is available.
 
+% ---------------------------------------------------------------------
+% 3.10 Conclusion
+% ---------------------------------------------------------------------
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-The Real-Time Digital Filter Evaluation Platform addresses the limitations
-identified in Section~\ref{sec:problem_statement}: it provides real-time
-observability of the digital filter, eliminates the firmware re-flash step from
-the filter-evaluation cycle through runtime reconfiguration
-(Section~\ref{sec:runtime_filter_configuration}), and provides a unified,
-multi-channel visualization interface (Section~\ref{sec:host_visualization}).
-The resulting workflow — test signal generation, embedded processing, wireless
-transmission, and real-time visualization — provides a practical basis for
-evaluating digital filter implementations on real hardware and for identifying
-implementation-specific effects not visible during offline simulation.
+The developed Real-Time Digital Filter Evaluation Platform successfully
+combines test-signal generation, embedded filter processing, telemetry
+transmission, and real-time visualization.
+
+The ninth-order Bessel low-pass filter met its specified cutoff frequency with
+a deviation of only $0.045\%$. The different supported filter realizations were
+successfully evaluated under real-time conditions on the ESP32-S3 and Arduino
+Nano 33 IoT platforms.
+
+The experiments demonstrated that floating-point Direct Form~I IIR provides a
+stable and computationally efficient solution on the ESP32-S3. In contrast, the
+integer Direct Form~I IIR implementation exhibited quantization-induced limit
+cycles for selected input conditions. The SOS, LTC, and FIR integer
+implementations showed improved numerical robustness under the tested
+conditions.
+
+The comparison with the Arduino Due and Teensy 4.1 further demonstrates that
+the available arithmetic hardware has a direct impact on the suitability of a
+filter realization for real-time operation.
+
+Consequently, the selection of a digital-filter implementation cannot be based
+solely on execution time. Filter structure, numerical representation,
+finite-word-length behaviour, and the computational capabilities of the target
+microcontroller must all be considered when selecting a realization for a
+real-time embedded application.

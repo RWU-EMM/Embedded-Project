@@ -1,5 +1,9 @@
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Hardware setup of the developed real-time digital filter evaluation platform.}}{2}{figure.caption.4}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {2.1}{\ignorespaces Overall architecture of the real-time digital filter evaluation platform.}}{3}{figure.caption.4}%
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Overall architecture of the real-time digital filter evaluation platform.}}{3}{figure.caption.5}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Final real-time graphical interface of the digital filter evaluation platform.}}{10}{figure.caption.7}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Real-time graphical interface for signal visualization and statistical analysis.}}{11}{figure.caption.8}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Real-time impulse response of the ninth-order floating-point Direct Form~I IIR Bessel filter.}}{12}{figure.caption.9}%
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Zoomed view of the discrete-time impulse response of the floating-point Direct Form~I IIR implementation.}}{12}{figure.caption.10}%
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Measured signal statistics during the floating-point IIR impulse-response test.}}{13}{figure.caption.11}%

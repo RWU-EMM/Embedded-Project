@@ -1,5 +1,8 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {table}{\numberline {2.1}{\ignorespaces Runtime command interface. \texttt {imode}, \texttt {freq}, \texttt {amp}, \texttt {wave}, and \texttt {gcoeff} apply to the ESP32-S3 only; the target implements \texttt {fmode}, \texttt {scoeff}, \texttt {reset}, and \texttt {stop}/\texttt {start}.}}{7}{table.caption.5}%
-\contentsline {table}{\numberline {2.2}{\ignorespaces DSM packet layout. Total size is 20~B in UDP mode (with \texttt {seq}) and 18~B in USB mode (without), verified by a compile-time size assertion.}}{8}{table.caption.6}%
+\contentsline {table}{\numberline {2.1}{\ignorespaces Runtime command interface of the ESP32-S3 platform.}}{7}{table.caption.6}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Runtime command interface. \texttt {imode}, \texttt {freq}, \texttt {amp}, \texttt {wave}, and \texttt {gcoeff} apply to the ESP32-S3 only; the target implements \texttt {fmode}, \texttt {scoeff}, \texttt {reset}, and \texttt {stop}/\texttt {start}.}}{7}{table.caption.6}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces DSM packet layout. The total packet size is 20~B in UDP mode (with \texttt {seq}) and 18~B in USB mode (without \texttt {seq}), as verified by a compile-time size assertion.}}{8}{table.caption.7}%
 \addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Execution time and CPU load of the supported filter realizations on the ESP32-S3 for $N=9$ and $T_s=200~\mu \mathrm {s}$.}}{14}{table.caption.12}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Reference execution performance for selected ninth-order filter realizations on different microcontroller platforms.}}{15}{table.caption.13}%
